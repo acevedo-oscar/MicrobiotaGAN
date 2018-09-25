@@ -14,8 +14,7 @@ class Generator:
         self.G_b1 = tf.Variable(tf.zeros(shape=[mini_batch_size]) )
 
         self.G_W2 = tf.Variable(xavier_init([mini_batch_size, pixels_per_image ]) )
-        self.G_b2 = tf.Variable(tf.zeros(shape=[784]) ) 
-
+        self.G_b2 = tf.Variable(tf.zeros(shape=[784]) )
 
     def draw_samples(self, noise) -> float:
 
@@ -31,3 +30,9 @@ class Generator:
         G_prob = tf.nn.sigmoid(G_log_prob)
 
         return G_prob
+
+
+    generator_patameres = [self.G_W1, self.G_W2, self.G_b1, self.G_b2]
+
+    def optimize_step(self, generator_cost) -> None:
+        return  tf.train.AdamOptimizer().minimize(generator_cost, var_list=theta_G)
