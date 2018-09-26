@@ -1,10 +1,6 @@
 import tensorflow as tf
 
 def xavier_init(size):
-    print("my size is "+str(size))
-    print(type(size))
-    print(len(size))
-
     if size  == 1:
         size.append(None)
     in_dim = size[0]

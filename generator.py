@@ -16,23 +16,17 @@ class Generator:
         self.G_W2 = tf.Variable(xavier_init([mini_batch_size, pixels_per_image ]) )
         self.G_b2 = tf.Variable(tf.zeros(shape=[784]) )
 
-    def draw_samples(self, noise) -> float:
+    def draw_samples(self, noise) :
 
         G_h1 = tf.nn.relu(tf.matmul(noise, self.G_W1) + self.G_b1)
 
-        print("Debugging \n")
-        print(type(noise))
-        #print(G_h1)
-        #print(self.G_W2)
-        print("\n Debugging\n")
 
         G_log_prob = tf.matmul(G_h1, self.G_W2) + self.G_b2
         G_prob = tf.nn.sigmoid(G_log_prob)
 
         return G_prob
 
-
-    generator_patameres = [self.G_W1, self.G_W2, self.G_b1, self.G_b2]
-
     def optimize_step(self, generator_cost) -> None:
-        return  tf.train.AdamOptimizer().minimize(generator_cost, var_list=theta_G)
+        generator_patameres = [self.G_W1, self.G_W2, self.G_b1, self.G_b2]
+
+        return  tf.train.AdamOptimizer().minimize(generator_cost, var_list=generator_patameres)
