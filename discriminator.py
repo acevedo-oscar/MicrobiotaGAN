@@ -8,12 +8,12 @@ class Discriminator:
 
         pixels_per_image : int = side_pixels*side_pixels
 
-        nodes_input_layer : int = 100
+        nodes_input_layer : int = 128
 
-        self.D_W1 = tf.Variable(xavier_init([pixels_per_image, mini_batch_size]))
-        self.D_b1 = tf.Variable(tf.zeros(shape=[mini_batch_size]))
+        self.D_W1 = tf.Variable(xavier_init([pixels_per_image, nodes_input_layer]))
+        self.D_b1 = tf.Variable(tf.zeros(shape=[nodes_input_layer]))
 
-        self.D_W2 = tf.Variable(xavier_init([mini_batch_size, 1]))
+        self.D_W2 = tf.Variable(xavier_init([nodes_input_layer, 1]))
         self.D_b2 = tf.Variable(tf.zeros(shape=[1]))
 
     def get_probability_and_logit(self, x):
@@ -26,4 +26,12 @@ class Discriminator:
     def optimize_step(self, discriminator_cost) -> None:
         discriminator_patameres = [self.D_W1, self.D_b1, self.D_W2, self.D_b2]
 
-        return  tf.train.AdamOptimizer().minimize(discriminator_cost, var_list=discriminator_patameres)
+        # tf.train.AdamOptimizer().minimize(discriminator_cost, var_list=discriminator_patameres)
+        return  tf.train.RMSPropOptimizer(learning_rate=1e-4).minimize( -1*discriminator_cost, var_list=discriminator_patameres)
+
+
+    def clip_parameters(self, fixed_value:float):
+        #Try a small value  like 0.01
+        discriminator_patameres = [self.D_W1, self.D_b1, self.D_W2, self.D_b2]
+        clip_D = [p.assign(tf.clip_by_value(p, -fixed_value, fixed_value)) for p in discriminator_patameres]
+        return clip_D
