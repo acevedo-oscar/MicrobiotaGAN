@@ -10,11 +10,11 @@ class Generator:
 
         nodes_input_layer : int = 128
 
-        self.G_W1 = tf.Variable(xavier_init([noise_dim, nodes_input_layer]) )
-        self.G_b1 = tf.Variable(tf.zeros(shape=[nodes_input_layer]) )
+        self.G_W1 = tf.Variable(xavier_init([noise_dim, nodes_input_layer]) , name="G_W1")
+        self.G_b1 = tf.Variable(tf.zeros(shape=[nodes_input_layer]), name="G_b1" )
 
-        self.G_W2 = tf.Variable(xavier_init([nodes_input_layer, pixels_per_image ]) )
-        self.G_b2 = tf.Variable(tf.zeros(shape=[pixels_per_image]) )
+        self.G_W2 = tf.Variable(xavier_init([nodes_input_layer, pixels_per_image ]) , name="G_W2")
+        self.G_b2 = tf.Variable(tf.zeros(shape=[pixels_per_image]) , name="G_b2")
 
     def draw_samples(self, noise) :
 

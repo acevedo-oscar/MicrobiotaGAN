@@ -1,13 +1,13 @@
 import numpy
 import pickle
-
+import numpy as np
 class dataset_manager:
 
     def __init__(self,images_set) -> None:
 
         k = len(images_set)
-
-        self._images = numpy.array([images_set[i].flatten() for i in range(0,k)])
+        # Flattens 28x28 images and normalize its values
+        self._images = numpy.array([(images_set[i].flatten()/np.sum(images_set[i])) for i in range(0,k)])
         self._num_examples = k
         self._epochs_completed : int = 0
         self._index_in_epoch = 0
@@ -40,7 +40,7 @@ class dataset_manager:
     			perm = numpy.arange(self._num_examples)
     			numpy.random.shuffle(perm)
     			self._images = self.images[perm]
-    			
+
     		# Start next epoch
     		start = 0
     		self._index_in_epoch = batch_size - rest_num_examples
