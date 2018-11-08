@@ -1,14 +1,37 @@
 import numpy
 import pickle
 import numpy as np
+import copy
+
+def normalize_ds(dataset):
+    """
+    Normalizes using the following formula. We use it because species abundance
+    should be greater or equal to zero.
+
+    Z = X - min(X) / max(X) - min(x)
+
+    It assumes that the dataset is two-dimentional matrix where each row represents
+    a different community.
+
+    Outliers may cause troubles
+    """
+    dataset = copy.copy(dataset)
+    
+    dim_dataset = dataset.shape
+
+    for n_row in range(dim_dataset[0]):
+        k = dataset[n_row,:]
+        k_norm =(k - np.min(k))/(np.max(k) - np.min(k))
+        dataset[n_row,:] = k_norm
+
+    return dataset
+
+
 class dataset_manager:
 
     def __init__(self,images_set) -> None:
-
-        k = len(images_set)
-        # Flattens 28x28 images and normalize its values
-        self._images = numpy.array([(images_set[i].flatten()/np.sum(images_set[i])) for i in range(0,k)])
-        self._num_examples = k
+        self._images = normalize_ds(images_set)
+        self._num_examples = images_set.shape[0]
         self._epochs_completed : int = 0
         self._index_in_epoch = 0
 

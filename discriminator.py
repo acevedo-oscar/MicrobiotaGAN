@@ -4,13 +4,11 @@ from MicrobiotaGAN.xavier_initialization import xavier_init
 
 class Discriminator:
 
-    def __init__(self,mini_batch_size : int ,side_pixels: int) -> None:
-
-        pixels_per_image : int = side_pixels*side_pixels
+    def __init__(self,mini_batch_size : int ,n_species: int) -> None: 
 
         nodes_input_layer : int = 128
 
-        self.D_W1 = tf.Variable(xavier_init([pixels_per_image, nodes_input_layer]))
+        self.D_W1 = tf.Variable(xavier_init([n_species, nodes_input_layer]))
         self.D_b1 = tf.Variable(tf.zeros(shape=[nodes_input_layer]))
 
         self.D_W2 = tf.Variable(xavier_init([nodes_input_layer, 1]))
