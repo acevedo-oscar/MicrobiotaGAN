@@ -2,9 +2,10 @@ import tensorflow as tf
 
 from MicrobiotaGAN.xavier_initialization import xavier_init
 
-class Generator:
 
-    def __init__(self,noise_dim : int ,n_species: int) -> None:
+class Generator:`
+
+    def __init__(self, noise_dim : int, n_species: int) -> None:
          
         nodes_input_layer : int = 128
 
@@ -16,16 +17,15 @@ class Generator:
 
     def draw_samples(self, noise) :
 
-        G_h1 = tf.nn.relu(tf.matmul(noise, self.G_W1) + self.G_b1)
+        g_h1 = tf.nn.relu(tf.matmul(noise, self.G_W1) + self.G_b1)
 
+        g_log_prob = tf.matmul(g_h1, self.G_W2) + self.G_b2
+        g_prob = tf.nn.sigmoid(g_log_prob)
 
-        G_log_prob = tf.matmul(G_h1, self.G_W2) + self.G_b2
-        G_prob = tf.nn.sigmoid(G_log_prob)
-
-        return G_prob
+        return g_prob
 
     def optimize_step(self, generator_cost) -> None:
-        generator_patameres = [self.G_W1, self.G_W2, self.G_b1, self.G_b2]
+        generator_parameters = [self.G_W1, self.G_W2, self.G_b1, self.G_b2]
 
-        # tf.train.AdamOptimizer().minimize(generator_cost, var_list=generator_patameres)
-        return  tf.train.RMSPropOptimizer(learning_rate=1e-4).minimize(generator_cost, var_list=generator_patameres)
+        # tf.train.AdamOptimizer().minimize(generator_cost, var_list=generator_parameters)
+        return tf.train.RMSPropOptimizer(learning_rate=1e-4).minimize(generator_cost, var_list=generator_parameters)
