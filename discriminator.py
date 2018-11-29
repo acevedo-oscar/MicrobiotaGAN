@@ -5,7 +5,7 @@ from MicrobiotaGAN.xavier_initialization import xavier_init
 
 class Discriminator:
 
-    def __init__(self,mini_batch_size : int ,n_species: int) -> None:
+    def __init__(self, n_species: int) -> None:
 
         nodes_input_layer: int = 128
         self.epsilon = 1e-3
