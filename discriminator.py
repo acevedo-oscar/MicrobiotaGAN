@@ -63,7 +63,7 @@ class Discriminator:
 
         return [d_prob, d_logit]
 
-    def inference_probability_and_logit(self, x, train=False):
+    def inference_probability_and_logit(self, x):
         input_layer = tf.matmul(x, self.D_W1) + self.D_b1
 
         pop_mean1 = tf.Variable(tf.zeros([input_layer.get_shape()[-1]]), trainable=False)

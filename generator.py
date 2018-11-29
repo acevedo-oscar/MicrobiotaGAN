@@ -26,8 +26,8 @@ class Generator:
 
         input_layer = tf.matmul(noise, self.G_W1) + self.G_b1
 
-        pop_mean1 = tf.Variable(tf.zeros([input_layer.get_shape()[-1]]), trainable=False)
-        pop_var1 = tf.Variable(tf.ones([input_layer.get_shape()[-1]]), trainable=False)
+        pop_mean1 = tf.Variable(tf.zeros([input_layer.get_shape()[0]]), trainable=False)
+        pop_var1 = tf.Variable(tf.ones([input_layer.get_shape()[0]]), trainable=False)
 
         batch_mean1, batch_var1 = tf.nn.moments(input_layer, [0])
 
@@ -65,7 +65,7 @@ class Generator:
 
         return g_prob
 
-    def inference_draw_samples(self, noise, decay=0.999):
+    def inference_draw_samples(self, noise):
         input_layer = tf.matmul(noise, self.G_W1) + self.G_b1
 
         pop_mean1 = tf.Variable(tf.zeros([input_layer.get_shape()[-1]]), trainable=False)
