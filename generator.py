@@ -7,27 +7,27 @@ class Generator:
 
     def __init__(self, noise_dim : int, n_species: int) -> None:
          
-        nodes_input_layer : int = 128
+        nodes_input_layer: int = 128
         self.epsilon = 1e-3
 
         self.G_W1 = tf.Variable(xavier_init([noise_dim, nodes_input_layer]), name="G_W1")
         self.G_b1 = tf.Variable(tf.zeros(shape=[nodes_input_layer]), name="G_b1")
 
-        self.L1_scale1 = tf.Variable(tf.ones([n_species]), name="L1_scale1")
-        self.L1_beta1 = tf.Variable(tf.zeros([n_species]), name="L1_beta1")
+        self.L1_scale1 = tf.Variable(tf.ones([nodes_input_layer]), name="L1_scale1")
+        self.L1_beta1 = tf.Variable(tf.zeros([nodes_input_layer]), name="L1_beta1")
 
         self.G_W2 = tf.Variable(xavier_init([nodes_input_layer, n_species]), name="G_W2")
-        self.G_b2 = tf.Variable(tf.zeros(shape=[n_species]), name="G_b2")
+        self.G_b2 = tf.Variable(tf.zeros(tf.zeros(shape=[n_species]), name="G_b2"))
 
-        self.L2_scale2 = tf.Variable(tf.ones([nodes_input_layer]), name="L2_scale2")
-        self.L2_beta2 = tf.Variable(tf.zeros([nodes_input_layer]), name="L2_beta2")
+        self.L2_scale2 = tf.Variable(tf.ones([n_species]), name="L2_scale2")
+        self.L2_beta2 = tf.Variable(tf.zeros([n_species]), name="L2_beta2")
 
     def train_draw_samples(self, noise, decay=0.999):
 
         input_layer = tf.matmul(noise, self.G_W1) + self.G_b1
 
-        pop_mean1 = tf.Variable(tf.zeros([input_layer.get_shape()[0]]), trainable=False)
-        pop_var1 = tf.Variable(tf.ones([input_layer.get_shape()[0]]), trainable=False)
+        pop_mean1 = tf.Variable(tf.zeros([input_layer.get_shape()[-1]]), trainable=False)
+        pop_var1 = tf.Variable(tf.ones([input_layer.get_shape()[-1]]), trainable=False)
 
         batch_mean1, batch_var1 = tf.nn.moments(input_layer, [0])
 

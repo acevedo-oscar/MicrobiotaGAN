@@ -5,7 +5,7 @@ from MicrobiotaGAN.xavier_initialization import xavier_init
 
 class Discriminator:
 
-    def __init__(self,mini_batch_size : int ,n_species: int) -> None: 
+    def __init__(self, n_species: int) -> None:
 
         nodes_input_layer: int = 128
         self.epsilon = 1e-3
@@ -13,14 +13,14 @@ class Discriminator:
         self.D_W1 = tf.Variable(xavier_init([n_species, nodes_input_layer]))
         self.D_b1 = tf.Variable(tf.zeros(shape=[nodes_input_layer]))
 
-        self.L1_scale1 = tf.Variable(tf.ones([n_species]))
-        self.L1_beta1 = tf.Variable(tf.zeros([n_species]))
+        self.L1_scale1 = tf.Variable(tf.ones([nodes_input_layer]), name="L1_scale1")
+        self.L1_beta1 = tf.Variable(tf.zeros([nodes_input_layer]), name="L1_beta1")
 
         self.D_W2 = tf.Variable(xavier_init([nodes_input_layer, 1]))
         self.D_b2 = tf.Variable(tf.zeros(shape=[1]))
 
-        self.L2_scale2 = tf.Variable(tf.ones([nodes_input_layer]))
-        self.L2_beta2 = tf.Variable(tf.zeros([nodes_input_layer]))
+        self.L2_scale2 = tf.Variable(tf.ones([n_species]))
+        self.L2_beta2 = tf.Variable(tf.zeros([n_species]))
 
     def train_probability_and_logit(self, x, decay=0.999):
         input_layer = tf.matmul(x, self.D_W1) + self.D_b1
