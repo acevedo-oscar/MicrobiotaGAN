@@ -60,7 +60,7 @@ def ds_statistic_summary_dict(ds):
 
     These might be useful to scale back the data.
     """
-    ds = unroll_dataset(ds)
+    #ds = unroll_dataset(ds)
     n_rows = ds.shape[0]
 
     # axis = 1 computes the mean of each row
