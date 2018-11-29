@@ -17,7 +17,7 @@ class Generator:
         self.L1_beta1 = tf.Variable(tf.zeros([nodes_input_layer]), name="L1_beta1")
 
         self.G_W2 = tf.Variable(xavier_init([nodes_input_layer, n_species]), name="G_W2")
-        self.G_b2 = tf.Variable(tf.zeros(shape=[n_species]) , name="G_b2")
+        self.G_b2 = tf.Variable(tf.zeros(shape=[n_species]), name="G_b2")
 
         self.L2_scale2 = tf.Variable(tf.ones([n_species]), name="L2_scale2")
         self.L2_beta2 = tf.Variable(tf.zeros([n_species]), name="L2_beta2")

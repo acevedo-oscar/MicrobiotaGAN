@@ -5,7 +5,7 @@ from MicrobiotaGAN.xavier_initialization import xavier_init
 
 class Discriminator:
 
-    def __init__(self, n_species: int) -> None:
+    def __init__(self,mini_batch_size : int ,n_species: int) -> None:
 
         nodes_input_layer: int = 128
         self.epsilon = 1e-3
@@ -13,16 +13,16 @@ class Discriminator:
         self.D_W1 = tf.Variable(xavier_init([n_species, nodes_input_layer]))
         self.D_b1 = tf.Variable(tf.zeros(shape=[nodes_input_layer]))
 
-        self.L1_scale1 = tf.Variable(tf.ones([nodes_input_layer]), name="L1_scale1")
-        self.L1_beta1 = tf.Variable(tf.zeros([nodes_input_layer]), name="L1_beta1")
+        self.L1_scale1 = tf.Variable(tf.ones([n_species]))
+        self.L1_beta1 = tf.Variable(tf.zeros([n_species]))
 
         self.D_W2 = tf.Variable(xavier_init([nodes_input_layer, 1]))
         self.D_b2 = tf.Variable(tf.zeros(shape=[1]))
 
-        self.L2_scale2 = tf.Variable(tf.ones([n_species]))
-        self.L2_beta2 = tf.Variable(tf.zeros([n_species]))
+        self.L2_scale2 = tf.Variable(tf.ones([nodes_input_layer]))
+        self.L2_beta2 = tf.Variable(tf.zeros([nodes_input_layer]))
 
-    def train_probability_and_logit(self, x, decay=0.999):
+    def train_probability_and_logit(self, x, decay = 0.999):
         input_layer = tf.matmul(x, self.D_W1) + self.D_b1
 
         pop_mean1 = tf.Variable(tf.zeros([input_layer.get_shape()[-1]]), trainable=False)
@@ -63,7 +63,7 @@ class Discriminator:
 
         return [d_prob, d_logit]
 
-    def inference_probability_and_logit(self, x):
+    def inference_probability_and_logit(self, x, train=False):
         input_layer = tf.matmul(x, self.D_W1) + self.D_b1
 
         pop_mean1 = tf.Variable(tf.zeros([input_layer.get_shape()[-1]]), trainable=False)
@@ -83,16 +83,16 @@ class Discriminator:
         pop_mean2 = tf.Variable(tf.zeros([d_logit.get_shape()[-1]]), trainable=False)
         pop_var2 = tf.Variable(tf.ones([d_logit.get_shape()[-1]]), trainable=False)
         # batch_mean2, batch_var2 = tf.nn.moments(d_logit, [0])
-
         normalized_d_logit = tf.nn.batch_normalization(input_layer,
                                                        pop_mean2,
                                                        pop_var2,
-                                                           self.L1_scale2,
-                                                           self.L1_beta2,
-                                                           self.epsilon)
+                                                       self.L2_scale2,
+                                                       self.L2_beta2,
+                                                       self.epsilon)
         d_prob = tf.nn.sigmoid(normalized_d_logit)
 
         return [d_prob, d_logit]
+
     def optimize_step(self, discriminator_cost) -> None:
         discriminator_parameters = [self.D_W1, self.D_b1, self.D_W2, self.D_b2]
 
