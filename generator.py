@@ -55,11 +55,11 @@ class Generator:
 
         with tf.control_dependencies([train_mean2, train_var2]):
             normalized_g_log_prob = tf.nn.batch_normalization(g_log_prob,
-                                                           batch_mean2,
-                                                           batch_var2,
-                                                           self.L2_scale2,
-                                                           self.L2_beta2,
-                                                           self.epsilon)
+                                                              batch_mean2,
+                                                              batch_var2,
+                                                              self.L2_scale2,
+                                                              self.L2_beta2,
+                                                              self.epsilon)
 
         g_prob = tf.nn.sigmoid(normalized_g_log_prob)
 

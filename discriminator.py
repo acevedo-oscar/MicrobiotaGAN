@@ -54,16 +54,16 @@ class Discriminator:
 
         with tf.control_dependencies([train_mean2, train_var2]):
             normalized_d_logit = tf.nn.batch_normalization(d_logit,
-                                                               batch_mean2,
-                                                               batch_var2,
-                                                               self.L2_scale2,
-                                                               self.L2_beta2,
-                                                               self.epsilon)
+                                                           batch_mean2,
+                                                           batch_var2,
+                                                           self.L2_scale2,
+                                                           self.L2_beta2,
+                                                           self.epsilon)
         d_prob = tf.nn.sigmoid(normalized_d_logit)
 
-        return [d_prob, d_logit]
+        return [d_prob, normalized_d_logit]
 
-    def inference_probability_and_logit(self, x, train=False):
+    def inference_probability_and_logit(self, x):
         input_layer = tf.matmul(x, self.D_W1) + self.D_b1
 
         pop_mean1 = tf.Variable(tf.zeros([input_layer.get_shape()[-1]]), trainable=False)
@@ -91,7 +91,7 @@ class Discriminator:
                                                        self.epsilon)
         d_prob = tf.nn.sigmoid(normalized_d_logit)
 
-        return [d_prob, d_logit]
+        return [d_prob, normalized_d_logit]
 
     def optimize_step(self, discriminator_cost) -> None:
         discriminator_parameters = [self.D_W1, self.D_b1, self.D_W2, self.D_b2]
