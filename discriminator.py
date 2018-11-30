@@ -83,7 +83,7 @@ class Discriminator:
         pop_mean2 = tf.Variable(tf.zeros([d_logit.get_shape()[-1]]), trainable=False)
         pop_var2 = tf.Variable(tf.ones([d_logit.get_shape()[-1]]), trainable=False)
         # batch_mean2, batch_var2 = tf.nn.moments(d_logit, [0])
-        normalized_d_logit = tf.nn.batch_normalization(input_layer,
+        normalized_d_logit = tf.nn.batch_normalization(d_logit,
                                                        pop_mean2,
                                                        pop_var2,
                                                        self.L2_scale2,
