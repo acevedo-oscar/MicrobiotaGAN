@@ -51,24 +51,9 @@ class Discriminator:
 
         d_logit = tf.matmul(d_h1, self.D_W2) + self.D_b2
 
-        # pop_mean2 = tf.Variable(tf.zeros([d_logit.get_shape()[-1]]), trainable=False)
-        # pop_var2 = tf.Variable(tf.ones([d_logit.get_shape()[-1]]), trainable=False)
 
-        batch_mean2, batch_var2 = tf.nn.moments(d_logit, [0])
 
-        train_mean2 = tf.assign(self.pop_mean2, self.pop_mean2 * decay + batch_mean2 * (1 - decay))
-        train_var2 = tf.assign(self.pop_var2, self.pop_var2 * decay + batch_var2 * (1 - decay))
-
-        with tf.control_dependencies([train_mean2, train_var2]):
-            normalized_d_logit = tf.nn.batch_normalization(d_logit,
-                                                           batch_mean2,
-                                                           batch_var2,
-                                                           self.L2_scale2,
-                                                           self.L2_beta2,
-                                                           self.epsilon)
-        d_prob = tf.nn.sigmoid(normalized_d_logit)
-
-        return [d_prob, normalized_d_logit, d_logit, input_layer]
+        return d_logit
 
     def inference_probability_and_logit(self, x):
         input_layer = tf.matmul(x, self.D_W1) + self.D_b1
