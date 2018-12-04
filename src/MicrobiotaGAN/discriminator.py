@@ -1,6 +1,8 @@
 import tensorflow as tf
 
-from MicrobiotaGAN.xavier_initialization import xavier_init
+from src.MicrobiotaGAN.xavier_initialization import xavier_init
+
+from MicrobiotaGAN.batch_norm_wrapper import batch_norm_wrapper
 
 
 class Discriminator:
