@@ -15,7 +15,8 @@ class DataSetManager:
 
         self._images = ds
         self._num_examples = images_set.shape[0]
-        self._epochs_completed : int = 0
+        # self._epochs_completed : int = 0
+        self.epochs_completed: int = 0
         self._index_in_epoch = 0
 
 
@@ -28,7 +29,7 @@ class DataSetManager:
 
         start = self._index_in_epoch
         # Shuffle for the first epoch
-        if self._epochs_completed == 0 and start == 0 and shuffle:
+        if self.epochs_completed == 0 and start == 0 and shuffle:
             perm0 = numpy.arange(self._num_examples)
             numpy.random.shuffle(perm0)
             self._images = self.images[perm0]
@@ -36,7 +37,7 @@ class DataSetManager:
         # Go to the next epoch
         if start + batch_size > self._num_examples:
             # Finished epoch
-            self._epochs_completed += 1
+            self.epochs_completed += 1
             # Get the rest examples in this epoch
             rest_num_examples = self._num_examples - start
             images_rest_part = self._images[start:self._num_examples]
