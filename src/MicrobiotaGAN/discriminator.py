@@ -34,39 +34,19 @@ class Discriminator:
     def inference_probability_and_logit(self, x):
         input_layer = tf.matmul(x, self.D_W1) + self.D_b1
 
-        # pop_mean1 = tf.Variable(tf.zeros([input_layer.get_shape()[-1]]), trainable=False)
-        # pop_var1 = tf.Variable(tf.ones([input_layer.get_shape()[-1]]), trainable=False)
-        # batch_mean1, batch_var1 = tf.nn.moments(input_layer, [0])
-        """
-           normalized_input_layer = tf.nn.batch_normalization(input_layer,
-                                                           self.pop_mean1,
-                                                           self.pop_var1,
-                                                           self.L1_scale1,
-                                                           self.L1_beta1,
-                                                           self.epsilon)
+        normalized_input_layer = batch_norm_wrapper(input_layer, is_training=False)
+
         d_h1 = tf.nn.relu(normalized_input_layer)
 
         d_logit = tf.matmul(d_h1, self.D_W2) + self.D_b2
 
-        # pop_mean2 = tf.Variable(tf.zeros([d_logit.get_shape()[-1]]), trainable=False)
-        # pop_var2 = tf.Variable(tf.ones([d_logit.get_shape()[-1]]), trainable=False)
-        # batch_mean2, batch_var2 = tf.nn.moments(d_logit, [0])
-        normalized_d_logit = tf.nn.batch_normalization(d_logit,
-                                                       self.pop_mean2,
-                                                       self.pop_var2,
-                                                       self.L2_scale2,
-                                                       self.L2_beta2,
-                                                       self.epsilon)
-        d_prob = tf.nn.sigmoid(normalized_d_logit)    
-        
-        """
-        return input_layer
+        return d_logit
 
     def optimize_step(self, discriminator_cost) -> None:
         discriminator_parameters = [self.D_W1, self.D_b1, self.D_W2, self.D_b2]
 
         # tf.train.AdamOptimizer().minimize(discriminator_cost, var_list=discriminator_parameters)
-        # I does goes this way: -1*discriminator_cost
+        # I DOES goes this way: -1*discriminator_cost
         return tf.train.RMSPropOptimizer(learning_rate=1e-4).minimize(-1*discriminator_cost, var_list=discriminator_parameters)
 
     def clip_parameters(self, fixed_value:float):
