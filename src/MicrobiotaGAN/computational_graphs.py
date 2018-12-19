@@ -25,8 +25,10 @@ def train_graph(my_discriminator, my_generator, n_species, noise_dim):
     # Others
     clip_D = my_discriminator.clip_parameters(0.01)
 
+    graph_saver = tf.train.Saver()
+
     return [train_real_sample, train_noise_sample, G_cost_train, G_train_step, D_cost_train, D_train_step, clip_D,
-            D_logit_real_train, D_logit_fake_train]
+            D_logit_real_train, D_logit_fake_train, graph_saver]
 
 
 def inference_graph(my_discriminator, my_generator, n_species, noise_dim):
@@ -46,6 +48,8 @@ def inference_graph(my_discriminator, my_generator, n_species, noise_dim):
     # Others
     clip_D = my_discriminator.clip_parameters(0.01)
 
-    return [inference_real_sample, inference_noise_sample, G_cost_inference, D_cost_inference, clip_D]
+    graph_saver = tf.train.Saver()
+
+    return [inference_real_sample, inference_noise_sample, G_cost_inference, D_cost_inference, clip_D, graph_saver]
 
 

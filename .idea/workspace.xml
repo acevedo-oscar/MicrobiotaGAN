@@ -2,8 +2,22 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0dc2a673-a48f-4171-8a03-97c67b829265" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/notebooks/snippets.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/notebooks/Bio_WGAN.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/Bio_WGAN.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MicrobiotaGAN/discriminator.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/MicrobiotaGAN/discriminator.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebooks/CLEAN.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebooks/Sanity_Check.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebooks/backup_Bio_WGAN.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebooks/big_refactor_bio_wgan.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebooks/gan_samples.zip" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebooks/glv_barplot.png" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/glv_barplot.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/discriminator_loss.png" beforeDir="false" afterPath="$PROJECT_DIR$/results/discriminator_loss.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/generator_loss.png" beforeDir="false" afterPath="$PROJECT_DIR$/results/generator_loss.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/trained_gan.ckpt.data-00000-of-00001" beforeDir="false" afterPath="$PROJECT_DIR$/results/trained_gan.ckpt.data-00000-of-00001" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/trained_gan.ckpt.index" beforeDir="false" afterPath="$PROJECT_DIR$/results/trained_gan.ckpt.index" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/trained_gan.ckpt.meta" beforeDir="false" afterPath="$PROJECT_DIR$/results/trained_gan.ckpt.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MicrobiotaGAN/computational_graphs.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/MicrobiotaGAN/computational_graphs.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MicrobiotaGAN/dataset_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/MicrobiotaGAN/dataset_manager.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -14,75 +28,21 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/notebooks/Sanity_Check.py">
+        <entry file="file://$PROJECT_DIR$/notebooks/Scrub_This.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="21" selection-start-column="21" selection-end-column="21" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/notebooks/CLEAN.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4248">
-              <caret line="177" selection-start-line="177" selection-end-line="177" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/MicrobiotaGAN/dataset_manager.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="216">
-              <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
-              <folding>
-                <element signature="e#0#12#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/MicrobiotaGAN/cost.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="840">
-              <caret line="36" column="44" selection-start-line="36" selection-start-column="44" selection-end-line="36" selection-end-column="44" />
-              <folding>
-                <element signature="e#0#18#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/MicrobiotaGAN/batch_norm_wrapper.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="72">
-              <caret line="3" column="42" selection-start-line="3" selection-start-column="31" selection-end-line="3" selection-end-column="42" />
+            <state relative-caret-position="817">
+              <caret line="949" column="30" selection-start-line="949" selection-end-line="950" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/MicrobiotaGAN/discriminator.py">
+        <entry file="file://$PROJECT_DIR$/notebooks/snippets.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="555">
-              <caret line="35" selection-start-line="35" selection-end-line="35" />
+            <state relative-caret-position="41">
+              <caret line="220" column="4" selection-start-line="220" selection-start-column="4" selection-end-line="238" />
               <folding>
-                <element signature="e#0#23#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/MicrobiotaGAN/generator.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="281">
-              <caret line="29" column="37" selection-start-line="29" selection-start-column="37" selection-end-line="29" selection-end-column="37" />
-              <folding>
-                <element signature="e#0#23#0" expanded="true" />
+                <element signature="e#0#41#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -102,6 +62,18 @@
       <find>noise_sample</find>
       <find>norm_logit_t</find>
       <find>G_current_cost</find>
+      <find>train loo[</find>
+      <find>timer</find>
+      <find>G_</find>
+      <find>input_noi</find>
+      <find>epoch</find>
+      <find>epochs_global</find>
+      <find>saver</find>
+      <find>train_g_cost_record</find>
+      <find>randint</find>
+      <find>load</find>
+      <find>inverse</find>
+      <find>plot_</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -117,13 +89,16 @@
       <list>
         <option value="$PROJECT_DIR$/notebooks/Sanity_Check.py" />
         <option value="$PROJECT_DIR$/src/MicrobiotaGAN/quack.py" />
-        <option value="$PROJECT_DIR$/src/MicrobiotaGAN/dataset_manager.py" />
         <option value="$PROJECT_DIR$/notebooks/CLEAN.py" />
         <option value="$PROJECT_DIR$/src/MicrobiotaGAN/cost.py" />
         <option value="$PROJECT_DIR$/src/MicrobiotaGAN/batch_norm_wrapper.py" />
-        <option value="$PROJECT_DIR$/src/MicrobiotaGAN/computational_graphs.py" />
         <option value="$PROJECT_DIR$/src/MicrobiotaGAN/generator.py" />
         <option value="$PROJECT_DIR$/src/MicrobiotaGAN/discriminator.py" />
+        <option value="$PROJECT_DIR$/notebooks/Bio_WGAN.ipynb" />
+        <option value="$PROJECT_DIR$/src/MicrobiotaGAN/dataset_manager.py" />
+        <option value="$PROJECT_DIR$/notebooks/Scrub_This.py" />
+        <option value="$PROJECT_DIR$/src/MicrobiotaGAN/computational_graphs.py" />
+        <option value="$PROJECT_DIR$/notebooks/snippets.py" />
       </list>
     </option>
   </component>
@@ -140,6 +115,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -172,11 +148,10 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="settings.editor.selected.configurable" value="preferences.general" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -283,8 +258,28 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-1" y="0" width="1922" height="1055" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18114798" />
+      <window_info content_ui="combo" id="Project" order="0" weight="0.18114798" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.3297414" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.3297414" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Version Control" order="7" weight="0.3297414" />
+      <window_info anchor="bottom" id="Terminal" order="8" />
+      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" weight="0.3297414" />
+      <window_info anchor="bottom" id="Python Console" order="10" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+    </layout>
+    <layout-to-restore>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18114798" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -301,7 +296,7 @@
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-    </layout>
+    </layout-to-restore>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Restructured folders" />
@@ -312,33 +307,11 @@
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/MicrobiotaGAN/quack.py" />
-    <entry file="file://$PROJECT_DIR$/notebooks/Sanity_Check.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="21" selection-start-column="21" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/notebooks/CLEAN.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4248">
-          <caret line="177" selection-start-line="177" selection-end-line="177" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/MicrobiotaGAN/dataset_manager.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
-          <folding>
-            <element signature="e#0#12#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/notebooks/Sanity_Check.py" />
+    <entry file="file://$PROJECT_DIR$/notebooks/CLEAN.py" />
     <entry file="file://$PROJECT_DIR$/src/MicrobiotaGAN/cost.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="840">
+        <state relative-caret-position="833">
           <caret line="36" column="44" selection-start-line="36" selection-start-column="44" selection-end-line="36" selection-end-column="44" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
@@ -353,10 +326,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/MicrobiotaGAN/computational_graphs.py">
+    <entry file="file://$PROJECT_DIR$/src/MicrobiotaGAN/discriminator.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="264">
-          <caret line="11" column="86" selection-start-line="11" selection-start-column="70" selection-end-line="11" selection-end-column="87" />
+        <state relative-caret-position="555">
+          <caret line="35" selection-start-line="35" selection-end-line="35" />
           <folding>
             <element signature="e#0#23#0" expanded="true" />
           </folding>
@@ -365,7 +338,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/MicrobiotaGAN/generator.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="281">
+        <state relative-caret-position="624">
           <caret line="29" column="37" selection-start-line="29" selection-start-column="37" selection-end-line="29" selection-end-column="37" />
           <folding>
             <element signature="e#0#23#0" expanded="true" />
@@ -373,12 +346,46 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/MicrobiotaGAN/discriminator.py">
+    <entry file="file://$PROJECT_DIR$/notebooks/Bio_WGAN.ipynb">
+      <provider selected="true" editor-type-id="ipnb-editor">
+        <state>
+          <selected id="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/MicrobiotaGAN/dataset_manager.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="555">
-          <caret line="35" selection-start-line="35" selection-end-line="35" />
+        <state relative-caret-position="504">
+          <caret line="21" lean-forward="true" selection-start-line="21" selection-end-line="21" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/MicrobiotaGAN/computational_graphs.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="689">
+          <caret line="52" column="114" selection-start-line="52" selection-start-column="103" selection-end-line="52" selection-end-column="114" />
           <folding>
             <element signature="e#0#23#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/notebooks/Scrub_This.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="817">
+          <caret line="949" column="30" selection-start-line="949" selection-end-line="950" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/notebooks/snippets.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="41">
+          <caret line="220" column="4" selection-start-line="220" selection-start-column="4" selection-end-line="238" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
           </folding>
         </state>
       </provider>
