@@ -48,7 +48,7 @@ def load_data():
         microbiota_parameters = pickle.load(pickleFile)
 
     # ===> DATA TRANSFORMATION <====
-    microbiota_table = raw_microbiota_table[0:10000]
+    microbiota_table = raw_microbiota_table # [0:10000]
 
     microbiota_table = pseudo_log_transformation(microbiota_table)
     # ===> DATA TRANSFORMATION <====
@@ -263,6 +263,9 @@ def train_gan(microbiota_train_set, graph_train_operations, mini_batch_size,
         train_graph_saver.save(sess, '../results/trained_gan.ckpt')
         little_record.append(sess.run(my_generator.G_W1))
 
+        end = timer()
+        print(str(end - start) + " s")
+
     return [d_train_epoch_cost, g_train_epoch_cost]
     # epochs_global += train_epochs
 
@@ -401,19 +404,7 @@ def plot_cost(train_cost, test_cost, label_description: str):
     fig = plt.gcf()
     fig.set_size_inches(12, 12 / im_ratio)
 
-    plt.savefig('../results/generator_loss.png', dpi=300)
-
-
-def glv_loss(samples, m_A, m_R):
-
-    glv_errors = []
-    for k in range(samples.shape[0]):
-        error = np.sum(GLV_Model(samples[k, :], m_A, m_R))
-        glv_errors.append(error)
-
-    glv_errors = np.array(glv_errors)
-
-    return glv_errors
+    plt.savefig('../results/'+label_description+'_loss.png', dpi=300)
 
 
 def plot_glv_error_boxplot(glv_gen_errors, glv_train_errors, train_epochs:int , n_samples:int):
@@ -427,18 +418,24 @@ def plot_glv_error_boxplot(glv_gen_errors, glv_train_errors, train_epochs:int , 
     fig = plt.gcf()
     fig.set_size_inches(18.5, 10.5)
 
-    plt.savefig("glv_barplot.png")
+    plt.savefig("../results/glv_barplot.png")
 
 
 def gan_glv_cost(my_generator, m_A, m_r, n_samples = 10000):
     # Draw samples form the GAN
 
     gan_samples = draw_gan_samples(my_generator, number_of_samples_to_draw=n_samples)
+    gan_samples = gan_samples.reshape(n_samples, m_A.shape[0])
+
     gan_samples = inverse_pseudo_log_transformation(gan_samples)
 
-    gan_samples_error = glv_loss(gan_samples, m_A, m_r)
+    error_record = []
 
-    return gan_samples_error
+    for k in range(len(gan_samples)):
+        error = GLV_Model(gan_samples[k, :], m_A, m_r)
+        error_record.append(error)
+
+    return np.array(error_record)
 
 
 def standard_error_of_the_mean(data_table):
