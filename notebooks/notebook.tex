@@ -1,0 +1,1789 @@
+
+% Default to the notebook output style
+
+    
+
+
+% Inherit from the specified cell style.
+
+
+
+
+    
+\documentclass[11pt]{article}
+
+    
+    
+    \usepackage[T1]{fontenc}
+    % Nicer default font (+ math font) than Computer Modern for most use cases
+    \usepackage{mathpazo}
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % We will generate all images so they have a width \maxwidth. This means
+    % that they will get their normal width if they fit onto the page, but
+    % are scaled down if they would overflow the margins.
+    \makeatletter
+    \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth
+    \else\Gin@nat@width\fi}
+    \makeatother
+    \let\Oldincludegraphics\includegraphics
+    % Set max figure width to be 80% of text width, for now hardcoded.
+    \renewcommand{\includegraphics}[1]{\Oldincludegraphics[width=.8\maxwidth]{#1}}
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionLabelFormat{nolabel}{}
+    \captionsetup{labelformat=nolabel}
+
+    \usepackage{adjustbox} % Used to constrain images to a maximum size 
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage[utf8x]{inputenc} % Allow utf-8 characters in the tex document
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range 
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    
+
+    
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatability definitions
+    \def\gt{>}
+    \def\lt{<}
+    % Document parameters
+    \title{Testing-MNIST}
+    
+    
+    
+
+    % Pygments definitions
+    
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % Exact colors from NB
+    \definecolor{incolor}{rgb}{0.0, 0.0, 0.5}
+    \definecolor{outcolor}{rgb}{0.545, 0.0, 0.0}
+
+
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+    \begin{document}
+    
+    
+    \maketitle
+    
+    
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}1}]:} \PY{n}{get\PYZus{}ipython}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{run\PYZus{}line\PYZus{}magic}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{config}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Completer.use\PYZus{}jedi = False}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{} \PYZpc{}autoreload makes Jupyter to reload modules before executing the cell}
+        \PY{n}{get\PYZus{}ipython}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{run\PYZus{}line\PYZus{}magic}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{load\PYZus{}ext}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{autoreload}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{get\PYZus{}ipython}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{run\PYZus{}line\PYZus{}magic}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{autoreload}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{get\PYZus{}ipython}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{run\PYZus{}line\PYZus{}magic}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{matplotlib}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{inline}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        
+        \PY{k+kn}{import} \PY{n+nn}{copy}
+        \PY{k+kn}{import} \PY{n+nn}{os}
+        \PY{n}{working\PYZus{}dir}\PY{o}{=} \PY{n}{os}\PY{o}{.}\PY{n}{getcwd}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}2}]:} \PY{n}{os}\PY{o}{.}\PY{n}{chdir}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{../src}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{k+kn}{from} \PY{n+nn}{MicrobiotaGAN}\PY{n+nn}{.}\PY{n+nn}{generator} \PY{k}{import} \PY{n}{Generator}
+        \PY{k+kn}{from} \PY{n+nn}{MicrobiotaGAN}\PY{n+nn}{.}\PY{n+nn}{discriminator} \PY{k}{import} \PY{n}{Discriminator}
+        \PY{k+kn}{from} \PY{n+nn}{MicrobiotaGAN}\PY{n+nn}{.}\PY{n+nn}{cost} \PY{k}{import} \PY{n}{wasserstein\PYZus{}generator\PYZus{}cost}
+        \PY{k+kn}{from} \PY{n+nn}{MicrobiotaGAN}\PY{n+nn}{.}\PY{n+nn}{cost} \PY{k}{import} \PY{n}{wasserstein\PYZus{}discriminator\PYZus{}cost}
+        \PY{k+kn}{from} \PY{n+nn}{MicrobiotaGAN}\PY{n+nn}{.}\PY{n+nn}{input\PYZus{}noise\PYZus{}sample} \PY{k}{import} \PY{n}{input\PYZus{}noise\PYZus{}sample}
+        \PY{k+kn}{from} \PY{n+nn}{MicrobiotaGAN}\PY{n+nn}{.}\PY{n+nn}{dataset\PYZus{}manager} \PY{k}{import} \PY{n}{DataSetManager} 
+        \PY{k+kn}{from} \PY{n+nn}{MicrobiotaGAN}\PY{n+nn}{.}\PY{n+nn}{glv\PYZus{}loss} \PY{k}{import} \PY{n}{GLV\PYZus{}Model}
+        \PY{k+kn}{from} \PY{n+nn}{MicrobiotaGAN}\PY{n+nn}{.}\PY{n+nn}{utilities} \PY{k}{import} \PY{o}{*}
+        \PY{k+kn}{from} \PY{n+nn}{MicrobiotaGAN}\PY{n+nn}{.}\PY{n+nn}{computational\PYZus{}graphs} \PY{k}{import} \PY{o}{*}
+        
+        \PY{n}{os}\PY{o}{.}\PY{n}{chdir}\PY{p}{(}\PY{n}{working\PYZus{}dir}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}3}]:} \PY{k+kn}{import} \PY{n+nn}{tensorflow} \PY{k}{as} \PY{n+nn}{tf} 
+        
+        \PY{k}{if} \PY{n}{tf}\PY{o}{.}\PY{n}{test}\PY{o}{.}\PY{n}{gpu\PYZus{}device\PYZus{}name}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+            \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Default GPU Device: }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{tf}\PY{o}{.}\PY{n}{test}\PY{o}{.}\PY{n}{gpu\PYZus{}device\PYZus{}name}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+        \PY{k}{else}\PY{p}{:}
+            \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Please install GPU version of TF}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Default GPU Device: /device:GPU:0
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}4}]:} \PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+        \PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+        \PY{k+kn}{import} \PY{n+nn}{pickle}
+        \PY{k+kn}{import} \PY{n+nn}{seaborn} \PY{k}{as} \PY{n+nn}{sns} 
+        \PY{n}{sns}\PY{o}{.}\PY{n}{set}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}5}]:} \PY{k+kn}{from} \PY{n+nn}{snippets} \PY{k}{import} \PY{o}{*}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}6}]:} \PY{n}{mnist} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{../data/mnist\PYZus{}train.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{o}{.}\PY{n}{values}
+        \PY{n}{mnist\PYZus{}set} \PY{o}{=} \PY{n}{mnist}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{:}\PY{p}{]}
+        \PY{n+nb}{print}\PY{p}{(}\PY{n}{mnist\PYZus{}set}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+(60000, 784)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}7}]:} \PY{c+c1}{\PYZsh{} mnist\PYZus{}temp = pseudo\PYZus{}log\PYZus{}transformation(mnist\PYZus{}set)}
+        
+        \PY{n}{mnist\PYZus{}temp} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{multiply}\PY{p}{(}\PY{n}{mnist\PYZus{}set}\PY{p}{,} \PY{l+m+mf}{1.0}\PY{o}{/}\PY{l+m+mi}{255}\PY{p}{)}
+        
+        \PY{n}{mnist\PYZus{}train} \PY{o}{=} \PY{n}{DataSetManager}\PY{p}{(}\PY{n}{mnist\PYZus{}temp}\PY{p}{,} \PY{n}{norm}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+        
+        \PY{n}{microbiota\PYZus{}train\PYZus{}set} \PY{o}{=} \PY{n}{mnist\PYZus{}train}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}8}]:}  
+        \PY{n}{n\PYZus{}species} \PY{p}{:} \PY{n+nb}{int} \PY{o}{=} \PY{l+m+mi}{28}\PY{o}{*}\PY{l+m+mi}{28}
+        \PY{n}{mini\PYZus{}batch\PYZus{}size} \PY{p}{:} \PY{n+nb}{int} \PY{o}{=}\PY{l+m+mi}{32}
+        
+        \PY{n}{noise\PYZus{}dim} \PY{p}{:} \PY{n+nb}{int} \PY{o}{=} \PY{l+m+mi}{10}
+        \PY{n}{noise\PYZus{}sample} \PY{o}{=} \PY{n}{tf}\PY{o}{.}\PY{n}{placeholder}\PY{p}{(}\PY{n}{tf}\PY{o}{.}\PY{n}{float32}\PY{p}{,} \PY{n}{shape}\PY{o}{=}\PY{p}{[}\PY{k+kc}{None}\PY{p}{,} \PY{n}{noise\PYZus{}dim}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}9}]:} \PY{n}{noise\PYZus{}dim}\PY{p}{:} \PY{n+nb}{int} \PY{o}{=} \PY{l+m+mi}{10}
+        \PY{n}{noise\PYZus{}sample} \PY{o}{=} \PY{n}{tf}\PY{o}{.}\PY{n}{placeholder}\PY{p}{(}\PY{n}{tf}\PY{o}{.}\PY{n}{float32}\PY{p}{,} \PY{n}{shape}\PY{o}{=}\PY{p}{[}\PY{k+kc}{None}\PY{p}{,} \PY{n}{noise\PYZus{}dim}\PY{p}{]}\PY{p}{)}
+        
+        
+        
+        \PY{c+c1}{\PYZsh{} Computation Graph Definition}
+        \PY{n}{my\PYZus{}generator} \PY{o}{=} \PY{n}{Generator}\PY{p}{(}\PY{n}{noise\PYZus{}dim}\PY{p}{,} \PY{n}{n\PYZus{}species}\PY{p}{)}
+        \PY{n}{my\PYZus{}discriminator} \PY{o}{=} \PY{n}{Discriminator}\PY{p}{(}\PY{n}{n\PYZus{}species}\PY{p}{)}
+        
+        \PY{n}{train\PYZus{}real\PYZus{}sample}\PY{p}{,} \PY{n}{train\PYZus{}noise\PYZus{}sample}\PY{p}{,} \PY{n}{G\PYZus{}cost\PYZus{}train}\PY{p}{,} \PY{n}{G\PYZus{}train\PYZus{}step}\PY{p}{,} \PY{n}{D\PYZus{}cost\PYZus{}train}\PY{p}{,} \PY{n}{D\PYZus{}train\PYZus{}step}\PY{p}{,} \PY{n}{clip\PYZus{}D}\PY{p}{,} \PY{n}{D\PYZus{}logit\PYZus{}real\PYZus{}train}\PY{p}{,} \PY{n}{D\PYZus{}logit\PYZus{}fake\PYZus{}train}\PY{p}{,} \PY{n}{train\PYZus{}graph\PYZus{}saver} \PY{o}{=} \PY{n}{train\PYZus{}graph}\PY{p}{(}
+            \PY{n}{my\PYZus{}discriminator}\PY{p}{,} \PY{n}{my\PYZus{}generator}\PY{p}{,} \PY{n}{n\PYZus{}species}\PY{p}{,} \PY{n}{noise\PYZus{}dim}\PY{p}{)}
+        
+        \PY{n}{inference\PYZus{}real\PYZus{}sample}\PY{p}{,} \PY{n}{inference\PYZus{}noise\PYZus{}sample}\PY{p}{,} \PY{n}{G\PYZus{}cost\PYZus{}inference}\PY{p}{,} \PY{n}{D\PYZus{}cost\PYZus{}inference}\PY{p}{,} \PY{n}{clip\PYZus{}D}\PY{p}{,} \PY{n}{test\PYZus{}graph\PYZus{}saver} \PY{o}{=} \PY{n}{inference\PYZus{}graph}\PY{p}{(}
+            \PY{n}{my\PYZus{}discriminator}\PY{p}{,} \PY{n}{my\PYZus{}generator}\PY{p}{,} \PY{n}{n\PYZus{}species}\PY{p}{,} \PY{n}{noise\PYZus{}dim}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}10}]:} \PY{n}{graph\PYZus{}train\PYZus{}operations} \PY{o}{=} \PY{p}{[}\PY{n}{train\PYZus{}real\PYZus{}sample}\PY{p}{,} \PY{n}{train\PYZus{}noise\PYZus{}sample} \PY{p}{,}\PY{n}{D\PYZus{}cost\PYZus{}train}\PY{p}{,} \PY{n}{clip\PYZus{}D}\PY{p}{,} \PY{n}{D\PYZus{}train\PYZus{}step}\PY{p}{,} \PY{n}{G\PYZus{}train\PYZus{}step}\PY{p}{,} \PY{n}{G\PYZus{}cost\PYZus{}train}\PY{p}{,} \PY{n}{train\PYZus{}graph\PYZus{}saver}\PY{p}{]}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}11}]:} \PY{c+c1}{\PYZsh{} Training Loop}
+         
+         \PY{n}{d\PYZus{}train\PYZus{}cost} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+         \PY{n}{g\PYZus{}train\PYZus{}cost} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+         
+         \PY{n}{epoch\PYZus{}record} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+         
+         \PY{n}{glv\PYZus{}std\PYZus{}error\PYZus{}record} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+         \PY{n}{glv\PYZus{}cost\PYZus{}record} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+         
+         \PY{n}{total\PYZus{}epochs} \PY{o}{=} \PY{l+m+mi}{1000}
+         
+         \PY{k}{for} \PY{n}{k} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{total\PYZus{}epochs}\PY{o}{/}\PY{o}{/}\PY{l+m+mi}{5}\PY{p}{)}\PY{p}{:}
+         
+             \PY{n}{dis\PYZus{}cost}\PY{p}{,} \PY{n}{gen\PYZus{}cost} \PY{o}{=} \PY{n}{train\PYZus{}gan}\PY{p}{(}\PY{n}{microbiota\PYZus{}train\PYZus{}set}\PY{p}{,} \PY{n}{graph\PYZus{}train\PYZus{}operations}\PY{p}{,} \PY{n}{mini\PYZus{}batch\PYZus{}size}\PY{p}{,} \PY{l+m+mi}{5} \PY{p}{,} \PY{n}{my\PYZus{}discriminator}\PY{p}{,} \PY{n}{my\PYZus{}generator}\PY{p}{)}
+         
+             \PY{k}{for} \PY{n}{e} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{dis\PYZus{}cost}\PY{p}{)}\PY{p}{)}\PY{p}{:}   
+                 \PY{n}{d\PYZus{}train\PYZus{}cost}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{dis\PYZus{}cost}\PY{p}{[}\PY{n}{e}\PY{p}{]}\PY{p}{)}
+         
+             \PY{k}{for} \PY{n}{e} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{gen\PYZus{}cost}\PY{p}{)}\PY{p}{)}\PY{p}{:}    
+                 \PY{n}{g\PYZus{}train\PYZus{}cost}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{gen\PYZus{}cost}\PY{p}{[}\PY{n}{e}\PY{p}{]}\PY{p}{)}
+         
+             \PY{n}{epoch\PYZus{}record}\PY{o}{.}\PY{n}{append}\PY{p}{(} \PY{n}{microbiota\PYZus{}train\PYZus{}set}\PY{o}{.}\PY{n}{epochs\PYZus{}completed}\PY{p}{)}
+         
+         
+             \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Training epoch completed \PYZlt{}}\PY{l+s+s2}{\PYZdq{}}\PY{o}{+}\PY{n+nb}{str}\PY{p}{(}\PY{n}{k}\PY{p}{)}\PY{o}{+}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZgt{}}\PY{l+s+s2}{\PYZdq{}}\PY{o}{+}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ out of \PYZlt{}}\PY{l+s+s2}{\PYZdq{}}\PY{o}{+}\PY{n+nb}{str}\PY{p}{(}\PY{n}{total\PYZus{}epochs}\PY{o}{/}\PY{o}{/}\PY{l+m+mi}{5}\PY{p}{)}\PY{o}{+}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZgt{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+             \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Generator Loss: }\PY{l+s+s2}{\PYZdq{}}\PY{o}{+}\PY{n+nb}{str}\PY{p}{(}\PY{n}{gen\PYZus{}cost}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+             \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Discriminator Loss: }\PY{l+s+s2}{\PYZdq{}}\PY{o}{+}\PY{n+nb}{str}\PY{p}{(}\PY{n}{dis\PYZus{}cost}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Starting Traning Loop 
+
+29.0549983410001 s
+Training epoch completed <0> out of <200>
+Generator Loss: 0.25012106
+Discriminator Loss: 0.4958764
+Starting Traning Loop 
+
+27.825099394000063 s
+Training epoch completed <1> out of <200>
+Generator Loss: 0.20777741
+Discriminator Loss: 0.4920158
+Starting Traning Loop 
+
+27.76049174900004 s
+Training epoch completed <2> out of <200>
+Generator Loss: 0.20120241
+Discriminator Loss: 0.49117595
+Starting Traning Loop 
+
+27.831541852999862 s
+Training epoch completed <3> out of <200>
+Generator Loss: 0.21035108
+Discriminator Loss: 0.48798913
+Starting Traning Loop 
+
+27.908522601000186 s
+Training epoch completed <4> out of <200>
+Generator Loss: 0.20813255
+Discriminator Loss: 0.4832948
+Starting Traning Loop 
+
+27.891765697999972 s
+Training epoch completed <5> out of <200>
+Generator Loss: 0.22802734
+Discriminator Loss: 0.49293238
+Starting Traning Loop 
+
+27.89933493600006 s
+Training epoch completed <6> out of <200>
+Generator Loss: 0.25495738
+Discriminator Loss: 0.48659003
+Starting Traning Loop 
+
+27.85341964899999 s
+Training epoch completed <7> out of <200>
+Generator Loss: 0.20107725
+Discriminator Loss: 0.49151033
+Starting Traning Loop 
+
+27.771106916999997 s
+Training epoch completed <8> out of <200>
+Generator Loss: 0.19934762
+Discriminator Loss: 0.48944524
+Starting Traning Loop 
+
+27.929959932999964 s
+Training epoch completed <9> out of <200>
+Generator Loss: 0.24713023
+Discriminator Loss: 0.4953071
+Starting Traning Loop 
+
+27.866307690999975 s
+Training epoch completed <10> out of <200>
+Generator Loss: 0.22352076
+Discriminator Loss: 0.488042
+Starting Traning Loop 
+
+27.883908398999893 s
+Training epoch completed <11> out of <200>
+Generator Loss: 0.20458847
+Discriminator Loss: 0.4842117
+Starting Traning Loop 
+
+27.955905841999993 s
+Training epoch completed <12> out of <200>
+Generator Loss: 0.2349202
+Discriminator Loss: 0.49121648
+Starting Traning Loop 
+
+27.899098227999957 s
+Training epoch completed <13> out of <200>
+Generator Loss: 0.24883518
+Discriminator Loss: 0.48839295
+Starting Traning Loop 
+
+27.935737324 s
+Training epoch completed <14> out of <200>
+Generator Loss: 0.2600726
+Discriminator Loss: 0.48477018
+Starting Traning Loop 
+
+27.84602208399997 s
+Training epoch completed <15> out of <200>
+Generator Loss: 0.18641593
+Discriminator Loss: 0.4897962
+Starting Traning Loop 
+
+27.860653835999983 s
+Training epoch completed <16> out of <200>
+Generator Loss: 0.2715084
+Discriminator Loss: 0.48137283
+Starting Traning Loop 
+
+27.944280556999956 s
+Training epoch completed <17> out of <200>
+Generator Loss: 0.21655843
+Discriminator Loss: 0.48571867
+Starting Traning Loop 
+
+27.973962307999955 s
+Training epoch completed <18> out of <200>
+Generator Loss: 0.2698747
+Discriminator Loss: 0.49063498
+Starting Traning Loop 
+
+27.892263695999873 s
+Training epoch completed <19> out of <200>
+Generator Loss: 0.1783968
+Discriminator Loss: 0.4952255
+Starting Traning Loop 
+
+27.91328261800004 s
+Training epoch completed <20> out of <200>
+Generator Loss: 0.24566457
+Discriminator Loss: 0.4842434
+Starting Traning Loop 
+
+27.908352930000092 s
+Training epoch completed <21> out of <200>
+Generator Loss: 0.20778379
+Discriminator Loss: 0.4952221
+Starting Traning Loop 
+
+27.912414636999983 s
+Training epoch completed <22> out of <200>
+Generator Loss: 0.18632773
+Discriminator Loss: 0.48956728
+Starting Traning Loop 
+
+27.962998296000023 s
+Training epoch completed <23> out of <200>
+Generator Loss: 0.24416313
+Discriminator Loss: 0.5015771
+Starting Traning Loop 
+
+27.9218184450001 s
+Training epoch completed <24> out of <200>
+Generator Loss: 0.25471136
+Discriminator Loss: 0.4917049
+Starting Traning Loop 
+
+27.894576238000127 s
+Training epoch completed <25> out of <200>
+Generator Loss: 0.21091963
+Discriminator Loss: 0.48801857
+Starting Traning Loop 
+
+27.952154959000154 s
+Training epoch completed <26> out of <200>
+Generator Loss: 0.22413729
+Discriminator Loss: 0.4893322
+Starting Traning Loop 
+
+27.736495503000015 s
+Training epoch completed <27> out of <200>
+Generator Loss: 0.22056137
+Discriminator Loss: 0.49233094
+Starting Traning Loop 
+
+27.952028348999647 s
+Training epoch completed <28> out of <200>
+Generator Loss: 0.19602644
+Discriminator Loss: 0.4813031
+Starting Traning Loop 
+
+27.888616814000216 s
+Training epoch completed <29> out of <200>
+Generator Loss: 0.22816512
+Discriminator Loss: 0.48511133
+Starting Traning Loop 
+
+27.922634806000133 s
+Training epoch completed <30> out of <200>
+Generator Loss: 0.2198708
+Discriminator Loss: 0.49552357
+Starting Traning Loop 
+
+27.90724034499999 s
+Training epoch completed <31> out of <200>
+Generator Loss: 0.26563948
+Discriminator Loss: 0.48921448
+Starting Traning Loop 
+
+27.927429937999932 s
+Training epoch completed <32> out of <200>
+Generator Loss: 0.28256574
+Discriminator Loss: 0.4847761
+Starting Traning Loop 
+
+27.90693142200007 s
+Training epoch completed <33> out of <200>
+Generator Loss: 0.23608008
+Discriminator Loss: 0.49134448
+Starting Traning Loop 
+
+28.019142512000144 s
+Training epoch completed <34> out of <200>
+Generator Loss: 0.22729865
+Discriminator Loss: 0.48181352
+Starting Traning Loop 
+
+27.77920188600001 s
+Training epoch completed <35> out of <200>
+Generator Loss: 0.21517715
+Discriminator Loss: 0.48763385
+Starting Traning Loop 
+
+27.78459151700008 s
+Training epoch completed <36> out of <200>
+Generator Loss: 0.20981702
+Discriminator Loss: 0.504781
+Starting Traning Loop 
+
+27.805085068999688 s
+Training epoch completed <37> out of <200>
+Generator Loss: 0.24401262
+Discriminator Loss: 0.49039444
+Starting Traning Loop 
+
+27.875655189999634 s
+Training epoch completed <38> out of <200>
+Generator Loss: 0.22078772
+Discriminator Loss: 0.48179382
+Starting Traning Loop 
+
+27.849103781000395 s
+Training epoch completed <39> out of <200>
+Generator Loss: 0.23370436
+Discriminator Loss: 0.48474988
+Starting Traning Loop 
+
+27.818690941000114 s
+Training epoch completed <40> out of <200>
+Generator Loss: 0.20600197
+Discriminator Loss: 0.4894613
+Starting Traning Loop 
+
+27.903848273999756 s
+Training epoch completed <41> out of <200>
+Generator Loss: 0.20930794
+Discriminator Loss: 0.4959821
+Starting Traning Loop 
+
+27.774501988999873 s
+Training epoch completed <42> out of <200>
+Generator Loss: 0.28625017
+Discriminator Loss: 0.48287767
+Starting Traning Loop 
+
+27.90597765199982 s
+Training epoch completed <43> out of <200>
+Generator Loss: 0.20787121
+Discriminator Loss: 0.48041478
+Starting Traning Loop 
+
+27.80120180799986 s
+Training epoch completed <44> out of <200>
+Generator Loss: 0.20495857
+Discriminator Loss: 0.48355964
+Starting Traning Loop 
+
+27.851044939000076 s
+Training epoch completed <45> out of <200>
+Generator Loss: 0.21891236
+Discriminator Loss: 0.46990645
+Starting Traning Loop 
+
+27.88768462400003 s
+Training epoch completed <46> out of <200>
+Generator Loss: 0.20475733
+Discriminator Loss: 0.49197552
+Starting Traning Loop 
+
+27.886301456000183 s
+Training epoch completed <47> out of <200>
+Generator Loss: 0.21298656
+Discriminator Loss: 0.491801
+Starting Traning Loop 
+
+27.86560604599981 s
+Training epoch completed <48> out of <200>
+Generator Loss: 0.21875256
+Discriminator Loss: 0.48983055
+Starting Traning Loop 
+
+27.874374009999883 s
+Training epoch completed <49> out of <200>
+Generator Loss: 0.23536381
+Discriminator Loss: 0.49294558
+Starting Traning Loop 
+
+27.798744756999895 s
+Training epoch completed <50> out of <200>
+Generator Loss: 0.22577453
+Discriminator Loss: 0.48883465
+Starting Traning Loop 
+
+27.911817306000103 s
+Training epoch completed <51> out of <200>
+Generator Loss: 0.19968471
+Discriminator Loss: 0.49497056
+Starting Traning Loop 
+
+28.03728325799966 s
+Training epoch completed <52> out of <200>
+Generator Loss: 0.21375038
+Discriminator Loss: 0.47297966
+Starting Traning Loop 
+
+28.029858369000067 s
+Training epoch completed <53> out of <200>
+Generator Loss: 0.23841396
+Discriminator Loss: 0.4946244
+Starting Traning Loop 
+
+27.986827444000028 s
+Training epoch completed <54> out of <200>
+Generator Loss: 0.20762017
+Discriminator Loss: 0.49186963
+Starting Traning Loop 
+
+27.98632186099985 s
+Training epoch completed <55> out of <200>
+Generator Loss: 0.22216552
+Discriminator Loss: 0.48295158
+Starting Traning Loop 
+
+28.007926677999876 s
+Training epoch completed <56> out of <200>
+Generator Loss: 0.21337086
+Discriminator Loss: 0.48048162
+Starting Traning Loop 
+
+28.04424524599972 s
+Training epoch completed <57> out of <200>
+Generator Loss: 0.1908448
+Discriminator Loss: 0.48584878
+Starting Traning Loop 
+
+27.952660620999723 s
+Training epoch completed <58> out of <200>
+Generator Loss: 0.20007357
+Discriminator Loss: 0.48900872
+Starting Traning Loop 
+
+28.019383325000035 s
+Training epoch completed <59> out of <200>
+Generator Loss: 0.23671055
+Discriminator Loss: 0.49045268
+Starting Traning Loop 
+
+28.00744958300038 s
+Training epoch completed <60> out of <200>
+Generator Loss: 0.20945308
+Discriminator Loss: 0.48697793
+Starting Traning Loop 
+
+28.05618613200022 s
+Training epoch completed <61> out of <200>
+Generator Loss: 0.18274105
+Discriminator Loss: 0.49411225
+Starting Traning Loop 
+
+27.972269360000155 s
+Training epoch completed <62> out of <200>
+Generator Loss: 0.17984578
+Discriminator Loss: 0.49170843
+Starting Traning Loop 
+
+28.02202163999982 s
+Training epoch completed <63> out of <200>
+Generator Loss: 0.15391317
+Discriminator Loss: 0.48300958
+Starting Traning Loop 
+
+27.937179778999962 s
+Training epoch completed <64> out of <200>
+Generator Loss: 0.20274463
+Discriminator Loss: 0.4849166
+Starting Traning Loop 
+
+27.997397179000018 s
+Training epoch completed <65> out of <200>
+Generator Loss: 0.21506009
+Discriminator Loss: 0.49053147
+Starting Traning Loop 
+
+28.02027548900014 s
+Training epoch completed <66> out of <200>
+Generator Loss: 0.22591642
+Discriminator Loss: 0.48641616
+Starting Traning Loop 
+
+28.00776346199973 s
+Training epoch completed <67> out of <200>
+Generator Loss: 0.22988674
+Discriminator Loss: 0.48701113
+Starting Traning Loop 
+
+27.96191292000003 s
+Training epoch completed <68> out of <200>
+Generator Loss: 0.22877406
+Discriminator Loss: 0.4837864
+Starting Traning Loop 
+
+27.98469960600005 s
+Training epoch completed <69> out of <200>
+Generator Loss: 0.2566421
+Discriminator Loss: 0.4829356
+Starting Traning Loop 
+
+28.04536407400019 s
+Training epoch completed <70> out of <200>
+Generator Loss: 0.1853378
+Discriminator Loss: 0.4789886
+Starting Traning Loop 
+
+27.891602874 s
+Training epoch completed <71> out of <200>
+Generator Loss: 0.19948038
+Discriminator Loss: 0.4882712
+Starting Traning Loop 
+
+28.050066448000052 s
+Training epoch completed <72> out of <200>
+Generator Loss: 0.20251778
+Discriminator Loss: 0.49526447
+Starting Traning Loop 
+
+28.047227311999904 s
+Training epoch completed <73> out of <200>
+Generator Loss: 0.21390519
+Discriminator Loss: 0.5031787
+Starting Traning Loop 
+
+28.051905688999796 s
+Training epoch completed <74> out of <200>
+Generator Loss: 0.20210868
+Discriminator Loss: 0.49398836
+Starting Traning Loop 
+
+28.002891983000154 s
+Training epoch completed <75> out of <200>
+Generator Loss: 0.24456567
+Discriminator Loss: 0.4893554
+Starting Traning Loop 
+
+28.02479898899992 s
+Training epoch completed <76> out of <200>
+Generator Loss: 0.14516068
+Discriminator Loss: 0.5069684
+Starting Traning Loop 
+
+28.0364449839999 s
+Training epoch completed <77> out of <200>
+Generator Loss: 0.26726398
+Discriminator Loss: 0.4935867
+Starting Traning Loop 
+
+28.03310498499968 s
+Training epoch completed <78> out of <200>
+Generator Loss: 0.18758817
+Discriminator Loss: 0.4900332
+Starting Traning Loop 
+
+28.026305126999887 s
+Training epoch completed <79> out of <200>
+Generator Loss: 0.2345153
+Discriminator Loss: 0.48491177
+Starting Traning Loop 
+
+27.957093256999997 s
+Training epoch completed <80> out of <200>
+Generator Loss: 0.17962155
+Discriminator Loss: 0.4943474
+Starting Traning Loop 
+
+27.964445867999984 s
+Training epoch completed <81> out of <200>
+Generator Loss: 0.25733984
+Discriminator Loss: 0.47913843
+Starting Traning Loop 
+
+28.06615339300015 s
+Training epoch completed <82> out of <200>
+Generator Loss: 0.21644868
+Discriminator Loss: 0.47385725
+Starting Traning Loop 
+
+28.03764587600017 s
+Training epoch completed <83> out of <200>
+Generator Loss: 0.16328752
+Discriminator Loss: 0.48602968
+Starting Traning Loop 
+
+28.060558114000287 s
+Training epoch completed <84> out of <200>
+Generator Loss: 0.24866514
+Discriminator Loss: 0.48985863
+Starting Traning Loop 
+
+27.95464500800017 s
+Training epoch completed <85> out of <200>
+Generator Loss: 0.23539507
+Discriminator Loss: 0.48564485
+Starting Traning Loop 
+
+27.96983647199977 s
+Training epoch completed <86> out of <200>
+Generator Loss: 0.2339287
+Discriminator Loss: 0.4896028
+Starting Traning Loop 
+
+28.024694342000203 s
+Training epoch completed <87> out of <200>
+Generator Loss: 0.24316746
+Discriminator Loss: 0.48439217
+Starting Traning Loop 
+
+28.01705974999959 s
+Training epoch completed <88> out of <200>
+Generator Loss: 0.19983834
+Discriminator Loss: 0.49165198
+Starting Traning Loop 
+
+28.02462811000032 s
+Training epoch completed <89> out of <200>
+Generator Loss: 0.2332989
+Discriminator Loss: 0.48073485
+Starting Traning Loop 
+
+27.996954858999743 s
+Training epoch completed <90> out of <200>
+Generator Loss: 0.19104922
+Discriminator Loss: 0.48814422
+Starting Traning Loop 
+
+28.037380774000212 s
+Training epoch completed <91> out of <200>
+Generator Loss: 0.16898921
+Discriminator Loss: 0.49792507
+Starting Traning Loop 
+
+28.018008804000146 s
+Training epoch completed <92> out of <200>
+Generator Loss: 0.18371168
+Discriminator Loss: 0.49356374
+Starting Traning Loop 
+
+27.998627770999974 s
+Training epoch completed <93> out of <200>
+Generator Loss: 0.16851038
+Discriminator Loss: 0.48306838
+Starting Traning Loop 
+
+27.998702010000216 s
+Training epoch completed <94> out of <200>
+Generator Loss: 0.19848222
+Discriminator Loss: 0.50135744
+Starting Traning Loop 
+
+27.88164579799968 s
+Training epoch completed <95> out of <200>
+Generator Loss: 0.24206737
+Discriminator Loss: 0.48474464
+Starting Traning Loop 
+
+28.049861519999922 s
+Training epoch completed <96> out of <200>
+Generator Loss: 0.24554814
+Discriminator Loss: 0.48620307
+Starting Traning Loop 
+
+27.982432151000012 s
+Training epoch completed <97> out of <200>
+Generator Loss: 0.2096217
+Discriminator Loss: 0.49546978
+Starting Traning Loop 
+
+27.961653380999905 s
+Training epoch completed <98> out of <200>
+Generator Loss: 0.22192895
+Discriminator Loss: 0.48455304
+Starting Traning Loop 
+
+28.009713999999803 s
+Training epoch completed <99> out of <200>
+Generator Loss: 0.2170232
+Discriminator Loss: 0.4805088
+Starting Traning Loop 
+
+27.9551903509996 s
+Training epoch completed <100> out of <200>
+Generator Loss: 0.20066395
+Discriminator Loss: 0.50020534
+Starting Traning Loop 
+
+28.054720338999687 s
+Training epoch completed <101> out of <200>
+Generator Loss: 0.25490943
+Discriminator Loss: 0.4928015
+Starting Traning Loop 
+
+27.981542065999747 s
+Training epoch completed <102> out of <200>
+Generator Loss: 0.2088447
+Discriminator Loss: 0.48758385
+Starting Traning Loop 
+
+28.01422184400053 s
+Training epoch completed <103> out of <200>
+Generator Loss: 0.18539862
+Discriminator Loss: 0.4929108
+Starting Traning Loop 
+
+28.049676340000588 s
+Training epoch completed <104> out of <200>
+Generator Loss: 0.20564601
+Discriminator Loss: 0.49784
+Starting Traning Loop 
+
+27.97666928199942 s
+Training epoch completed <105> out of <200>
+Generator Loss: 0.20646065
+Discriminator Loss: 0.4914052
+Starting Traning Loop 
+
+28.057747816999836 s
+Training epoch completed <106> out of <200>
+Generator Loss: 0.2474091
+Discriminator Loss: 0.49210107
+Starting Traning Loop 
+
+28.036090765000154 s
+Training epoch completed <107> out of <200>
+Generator Loss: 0.18445373
+Discriminator Loss: 0.48556298
+Starting Traning Loop 
+
+28.05915687400011 s
+Training epoch completed <108> out of <200>
+Generator Loss: 0.21446183
+Discriminator Loss: 0.47212273
+Starting Traning Loop 
+
+28.051997864999976 s
+Training epoch completed <109> out of <200>
+Generator Loss: 0.19658145
+Discriminator Loss: 0.48996073
+Starting Traning Loop 
+
+28.03394642100011 s
+Training epoch completed <110> out of <200>
+Generator Loss: 0.20571768
+Discriminator Loss: 0.49062973
+Starting Traning Loop 
+
+27.98293950400057 s
+Training epoch completed <111> out of <200>
+Generator Loss: 0.20127349
+Discriminator Loss: 0.49894565
+Starting Traning Loop 
+
+28.053161169000305 s
+Training epoch completed <112> out of <200>
+Generator Loss: 0.22166054
+Discriminator Loss: 0.48393583
+Starting Traning Loop 
+
+28.166766918000576 s
+Training epoch completed <113> out of <200>
+Generator Loss: 0.24323867
+Discriminator Loss: 0.48760086
+Starting Traning Loop 
+
+28.02809044699916 s
+Training epoch completed <114> out of <200>
+Generator Loss: 0.19634812
+Discriminator Loss: 0.49612668
+Starting Traning Loop 
+
+28.0727473120005 s
+Training epoch completed <115> out of <200>
+Generator Loss: 0.2834826
+Discriminator Loss: 0.5005332
+Starting Traning Loop 
+
+28.066994816999795 s
+Training epoch completed <116> out of <200>
+Generator Loss: 0.24554002
+Discriminator Loss: 0.49670768
+Starting Traning Loop 
+
+28.061664234999625 s
+Training epoch completed <117> out of <200>
+Generator Loss: 0.23626097
+Discriminator Loss: 0.4926792
+Starting Traning Loop 
+
+28.00643889999992 s
+Training epoch completed <118> out of <200>
+Generator Loss: 0.2437343
+Discriminator Loss: 0.50285757
+Starting Traning Loop 
+
+28.01729271900058 s
+Training epoch completed <119> out of <200>
+Generator Loss: 0.20712104
+Discriminator Loss: 0.49339342
+Starting Traning Loop 
+
+28.065813649999654 s
+Training epoch completed <120> out of <200>
+Generator Loss: 0.2510515
+Discriminator Loss: 0.48349184
+Starting Traning Loop 
+
+28.003639308000857 s
+Training epoch completed <121> out of <200>
+Generator Loss: 0.21099049
+Discriminator Loss: 0.4903112
+Starting Traning Loop 
+
+28.078247329000078 s
+Training epoch completed <122> out of <200>
+Generator Loss: 0.23332655
+Discriminator Loss: 0.49648154
+Starting Traning Loop 
+
+28.07601431400053 s
+Training epoch completed <123> out of <200>
+Generator Loss: 0.19435702
+Discriminator Loss: 0.50251955
+Starting Traning Loop 
+
+28.038567020999835 s
+Training epoch completed <124> out of <200>
+Generator Loss: 0.18350169
+Discriminator Loss: 0.48222762
+Starting Traning Loop 
+
+28.03612314699967 s
+Training epoch completed <125> out of <200>
+Generator Loss: 0.21973312
+Discriminator Loss: 0.48536807
+Starting Traning Loop 
+
+28.103440205999505 s
+Training epoch completed <126> out of <200>
+Generator Loss: 0.24978127
+Discriminator Loss: 0.48821765
+Starting Traning Loop 
+
+28.074447894000514 s
+Training epoch completed <127> out of <200>
+Generator Loss: 0.22692584
+Discriminator Loss: 0.49315822
+Starting Traning Loop 
+
+27.946904557999915 s
+Training epoch completed <128> out of <200>
+Generator Loss: 0.2001127
+Discriminator Loss: 0.47376868
+Starting Traning Loop 
+
+27.90370888400048 s
+Training epoch completed <129> out of <200>
+Generator Loss: 0.20012972
+Discriminator Loss: 0.49027693
+Starting Traning Loop 
+
+28.047949793999578 s
+Training epoch completed <130> out of <200>
+Generator Loss: 0.1732588
+Discriminator Loss: 0.48768362
+Starting Traning Loop 
+
+28.01989754599981 s
+Training epoch completed <131> out of <200>
+Generator Loss: 0.24169007
+Discriminator Loss: 0.4924645
+Starting Traning Loop 
+
+28.01659879900035 s
+Training epoch completed <132> out of <200>
+Generator Loss: 0.2054067
+Discriminator Loss: 0.5027251
+Starting Traning Loop 
+
+27.915689432000363 s
+Training epoch completed <133> out of <200>
+Generator Loss: 0.27378175
+Discriminator Loss: 0.4909765
+Starting Traning Loop 
+
+28.03385599000012 s
+Training epoch completed <134> out of <200>
+Generator Loss: 0.23940009
+Discriminator Loss: 0.49311447
+Starting Traning Loop 
+
+28.087672857000143 s
+Training epoch completed <135> out of <200>
+Generator Loss: 0.20965537
+Discriminator Loss: 0.4876777
+Starting Traning Loop 
+
+28.053705766999883 s
+Training epoch completed <136> out of <200>
+Generator Loss: 0.24624522
+Discriminator Loss: 0.49439874
+Starting Traning Loop 
+
+28.039657661000092 s
+Training epoch completed <137> out of <200>
+Generator Loss: 0.25270545
+Discriminator Loss: 0.47926527
+Starting Traning Loop 
+
+28.09251836200019 s
+Training epoch completed <138> out of <200>
+Generator Loss: 0.20165375
+Discriminator Loss: 0.48347265
+Starting Traning Loop 
+
+28.056169313999817 s
+Training epoch completed <139> out of <200>
+Generator Loss: 0.2555533
+Discriminator Loss: 0.49237913
+Starting Traning Loop 
+
+28.076083951999863 s
+Training epoch completed <140> out of <200>
+Generator Loss: 0.25630736
+Discriminator Loss: 0.49417007
+Starting Traning Loop 
+
+27.984692615999847 s
+Training epoch completed <141> out of <200>
+Generator Loss: 0.28758103
+Discriminator Loss: 0.48556954
+Starting Traning Loop 
+
+28.004995491000045 s
+Training epoch completed <142> out of <200>
+Generator Loss: 0.22742517
+Discriminator Loss: 0.49145275
+Starting Traning Loop 
+
+28.089558347000093 s
+Training epoch completed <143> out of <200>
+Generator Loss: 0.26220143
+Discriminator Loss: 0.49215814
+Starting Traning Loop 
+
+28.04411194400018 s
+Training epoch completed <144> out of <200>
+Generator Loss: 0.22118667
+Discriminator Loss: 0.49284056
+Starting Traning Loop 
+
+28.02464287100065 s
+Training epoch completed <145> out of <200>
+Generator Loss: 0.23531368
+Discriminator Loss: 0.4848281
+Starting Traning Loop 
+
+28.046037426999646 s
+Training epoch completed <146> out of <200>
+Generator Loss: 0.22900002
+Discriminator Loss: 0.49207872
+Starting Traning Loop 
+
+27.894730376999178 s
+Training epoch completed <147> out of <200>
+Generator Loss: 0.21254823
+Discriminator Loss: 0.48110187
+Starting Traning Loop 
+
+28.1001815059999 s
+Training epoch completed <148> out of <200>
+Generator Loss: 0.22035116
+Discriminator Loss: 0.49408793
+Starting Traning Loop 
+
+28.067286352000338 s
+Training epoch completed <149> out of <200>
+Generator Loss: 0.1481049
+Discriminator Loss: 0.48894393
+Starting Traning Loop 
+
+28.018715984000664 s
+Training epoch completed <150> out of <200>
+Generator Loss: 0.1970621
+Discriminator Loss: 0.48429728
+Starting Traning Loop 
+
+28.103872057000444 s
+Training epoch completed <151> out of <200>
+Generator Loss: 0.21923146
+Discriminator Loss: 0.48622942
+Starting Traning Loop 
+
+28.075861673999498 s
+Training epoch completed <152> out of <200>
+Generator Loss: 0.2223435
+Discriminator Loss: 0.503733
+Starting Traning Loop 
+
+28.070224620000772 s
+Training epoch completed <153> out of <200>
+Generator Loss: 0.19883457
+Discriminator Loss: 0.49009073
+Starting Traning Loop 
+
+28.10742140900038 s
+Training epoch completed <154> out of <200>
+Generator Loss: 0.21200573
+Discriminator Loss: 0.4993239
+Starting Traning Loop 
+
+28.09720508600003 s
+Training epoch completed <155> out of <200>
+Generator Loss: 0.24870034
+Discriminator Loss: 0.4912879
+Starting Traning Loop 
+
+28.030953448999753 s
+Training epoch completed <156> out of <200>
+Generator Loss: 0.19217573
+Discriminator Loss: 0.49614146
+Starting Traning Loop 
+
+28.045109994000086 s
+Training epoch completed <157> out of <200>
+Generator Loss: 0.21161214
+Discriminator Loss: 0.48927447
+Starting Traning Loop 
+
+27.910906541999793 s
+Training epoch completed <158> out of <200>
+Generator Loss: 0.21227123
+Discriminator Loss: 0.48165792
+Starting Traning Loop 
+
+27.930240086000595 s
+Training epoch completed <159> out of <200>
+Generator Loss: 0.22364846
+Discriminator Loss: 0.4910595
+Starting Traning Loop 
+
+27.901825275000192 s
+Training epoch completed <160> out of <200>
+Generator Loss: 0.197236
+Discriminator Loss: 0.4905849
+Starting Traning Loop 
+
+28.00964919099988 s
+Training epoch completed <161> out of <200>
+Generator Loss: 0.18980648
+Discriminator Loss: 0.4865027
+Starting Traning Loop 
+
+27.920002607000242 s
+Training epoch completed <162> out of <200>
+Generator Loss: 0.21300916
+Discriminator Loss: 0.49003214
+Starting Traning Loop 
+
+27.93702538300022 s
+Training epoch completed <163> out of <200>
+Generator Loss: 0.2752617
+Discriminator Loss: 0.48393112
+Starting Traning Loop 
+
+27.865643746000387 s
+Training epoch completed <164> out of <200>
+Generator Loss: 0.20658712
+Discriminator Loss: 0.4921863
+Starting Traning Loop 
+
+27.99404377800056 s
+Training epoch completed <165> out of <200>
+Generator Loss: 0.21484208
+Discriminator Loss: 0.4944378
+Starting Traning Loop 
+
+27.926824328999828 s
+Training epoch completed <166> out of <200>
+Generator Loss: 0.23624721
+Discriminator Loss: 0.4981895
+Starting Traning Loop 
+
+27.96874922400002 s
+Training epoch completed <167> out of <200>
+Generator Loss: 0.20180343
+Discriminator Loss: 0.49056622
+Starting Traning Loop 
+
+27.952993071000492 s
+Training epoch completed <168> out of <200>
+Generator Loss: 0.22983252
+Discriminator Loss: 0.48538986
+Starting Traning Loop 
+
+27.98675246899984 s
+Training epoch completed <169> out of <200>
+Generator Loss: 0.1424915
+Discriminator Loss: 0.48004788
+Starting Traning Loop 
+
+28.076903551000214 s
+Training epoch completed <170> out of <200>
+Generator Loss: 0.20415597
+Discriminator Loss: 0.49665877
+Starting Traning Loop 
+
+27.953807449000124 s
+Training epoch completed <171> out of <200>
+Generator Loss: 0.20448744
+Discriminator Loss: 0.49149147
+Starting Traning Loop 
+
+27.884679887999482 s
+Training epoch completed <172> out of <200>
+Generator Loss: 0.19189072
+Discriminator Loss: 0.49263126
+Starting Traning Loop 
+
+28.08035117700001 s
+Training epoch completed <173> out of <200>
+Generator Loss: 0.24928558
+Discriminator Loss: 0.48823076
+Starting Traning Loop 
+
+27.984495110999887 s
+Training epoch completed <174> out of <200>
+Generator Loss: 0.22784114
+Discriminator Loss: 0.4812925
+Starting Traning Loop 
+
+27.902663546999975 s
+Training epoch completed <175> out of <200>
+Generator Loss: 0.20786467
+Discriminator Loss: 0.4918756
+Starting Traning Loop 
+
+28.057561223000448 s
+Training epoch completed <176> out of <200>
+Generator Loss: 0.17658661
+Discriminator Loss: 0.4914125
+Starting Traning Loop 
+
+27.92445615499946 s
+Training epoch completed <177> out of <200>
+Generator Loss: 0.24675965
+Discriminator Loss: 0.48647398
+Starting Traning Loop 
+
+28.121825213000193 s
+Training epoch completed <178> out of <200>
+Generator Loss: 0.26873758
+Discriminator Loss: 0.48857647
+Starting Traning Loop 
+
+28.028409329999704 s
+Training epoch completed <179> out of <200>
+Generator Loss: 0.2337029
+Discriminator Loss: 0.47949734
+Starting Traning Loop 
+
+28.038653938000607 s
+Training epoch completed <180> out of <200>
+Generator Loss: 0.20520854
+Discriminator Loss: 0.4940732
+Starting Traning Loop 
+
+28.0650061260003 s
+Training epoch completed <181> out of <200>
+Generator Loss: 0.23964942
+Discriminator Loss: 0.49081793
+Starting Traning Loop 
+
+28.10457563 s
+Training epoch completed <182> out of <200>
+Generator Loss: 0.23781244
+Discriminator Loss: 0.49072686
+Starting Traning Loop 
+
+27.8991293149993 s
+Training epoch completed <183> out of <200>
+Generator Loss: 0.23102508
+Discriminator Loss: 0.5003596
+Starting Traning Loop 
+
+27.867746699000236 s
+Training epoch completed <184> out of <200>
+Generator Loss: 0.24910636
+Discriminator Loss: 0.4920391
+Starting Traning Loop 
+
+28.10354505899977 s
+Training epoch completed <185> out of <200>
+Generator Loss: 0.27012032
+Discriminator Loss: 0.4872801
+Starting Traning Loop 
+
+28.015215910000734 s
+Training epoch completed <186> out of <200>
+Generator Loss: 0.20073238
+Discriminator Loss: 0.49246964
+Starting Traning Loop 
+
+28.097676051000235 s
+Training epoch completed <187> out of <200>
+Generator Loss: 0.21383533
+Discriminator Loss: 0.49653524
+Starting Traning Loop 
+
+28.09233595600017 s
+Training epoch completed <188> out of <200>
+Generator Loss: 0.20233068
+Discriminator Loss: 0.4857644
+Starting Traning Loop 
+
+28.067722685999797 s
+Training epoch completed <189> out of <200>
+Generator Loss: 0.22365206
+Discriminator Loss: 0.49841458
+Starting Traning Loop 
+
+28.09578876100022 s
+Training epoch completed <190> out of <200>
+Generator Loss: 0.19674602
+Discriminator Loss: 0.5039598
+Starting Traning Loop 
+
+28.127698803000385 s
+Training epoch completed <191> out of <200>
+Generator Loss: 0.20592824
+Discriminator Loss: 0.49040622
+Starting Traning Loop 
+
+28.05493469799967 s
+Training epoch completed <192> out of <200>
+Generator Loss: 0.26321507
+Discriminator Loss: 0.48656404
+Starting Traning Loop 
+
+28.16391947200009 s
+Training epoch completed <193> out of <200>
+Generator Loss: 0.19053604
+Discriminator Loss: 0.4754702
+Starting Traning Loop 
+
+28.072845180000513 s
+Training epoch completed <194> out of <200>
+Generator Loss: 0.23877065
+Discriminator Loss: 0.4804104
+Starting Traning Loop 
+
+28.14980862399989 s
+Training epoch completed <195> out of <200>
+Generator Loss: 0.23905627
+Discriminator Loss: 0.49252126
+Starting Traning Loop 
+
+28.128734932000043 s
+Training epoch completed <196> out of <200>
+Generator Loss: 0.2493405
+Discriminator Loss: 0.49714166
+Starting Traning Loop 
+
+27.874621336999553 s
+Training epoch completed <197> out of <200>
+Generator Loss: 0.22270447
+Discriminator Loss: 0.49688542
+Starting Traning Loop 
+
+28.07021840499965 s
+Training epoch completed <198> out of <200>
+Generator Loss: 0.2734667
+Discriminator Loss: 0.49101588
+Starting Traning Loop 
+
+28.07672818899937 s
+Training epoch completed <199> out of <200>
+Generator Loss: 0.21743864
+Discriminator Loss: 0.49122205
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}12}]:} \PY{n}{one\PYZus{}im} \PY{o}{=} \PY{n}{draw\PYZus{}gan\PYZus{}samples}\PY{p}{(}\PY{n}{my\PYZus{}generator}\PY{p}{,} \PY{n}{number\PYZus{}of\PYZus{}samples\PYZus{}to\PYZus{}draw}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{one\PYZus{}im}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{one\PYZus{}im}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{:}\PY{l+m+mi}{5}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+(1, 784)
+[0.34696802 0.24616268 0.6731772  0.26275563 0.3995063 ]
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}13}]:} \PY{c+c1}{\PYZsh{} one\PYZus{}im = inverse\PYZus{}pseudo\PYZus{}log\PYZus{}transformation(one\PYZus{}im)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{After inverse}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{one\PYZus{}im}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{:}\PY{l+m+mi}{5}\PY{p}{]}\PY{p}{)}
+         
+         \PY{n}{la} \PY{o}{=} \PY{n}{one\PYZus{}im}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{l+m+mi}{28}\PY{p}{,}\PY{l+m+mi}{28}\PY{p}{)}
+         \PY{c+c1}{\PYZsh{}print(la[0:4,0:4])}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{one\PYZus{}im}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{l+m+mi}{28}\PY{p}{,}\PY{l+m+mi}{28}\PY{p}{)}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{savefig}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Entranada.png}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+After inverse
+[0.34696802 0.24616268 0.6731772  0.26275563 0.3995063 ]
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_12_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}14}]:} \PY{n}{original} \PY{o}{=} \PY{n}{mnist}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{:}\PY{p}{]}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{l+m+mi}{28}\PY{p}{,}\PY{l+m+mi}{28}\PY{p}{)}
+         
+         
+         \PY{n}{normalizado} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{multiply}\PY{p}{(}\PY{n}{original}\PY{p}{,} \PY{l+m+mf}{1.0}\PY{o}{/}\PY{l+m+mi}{255}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{normalizado}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{savefig}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Original.png}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_13_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}15}]:} \PY{n}{plot\PYZus{}cost}\PY{p}{(}\PY{n}{d\PYZus{}train\PYZus{}cost}\PY{p}{,}\PY{n}{d\PYZus{}train\PYZus{}cost}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Discriminator}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_14_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}16}]:} \PY{n}{plot\PYZus{}cost}\PY{p}{(}\PY{n}{g\PYZus{}train\PYZus{}cost}\PY{p}{,}\PY{n}{g\PYZus{}train\PYZus{}cost}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Generator}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_15_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{c+c1}{\PYZsh{} NOTE: use the saver from the training graph}
+        
+        \PY{n}{test\PYZus{}train\PYZus{}operations} \PY{o}{=} \PY{p}{[}\PY{n}{inference\PYZus{}real\PYZus{}sample}\PY{p}{,} \PY{n}{inference\PYZus{}noise\PYZus{}sample}\PY{p}{,} \PY{n}{D\PYZus{}cost\PYZus{}inference}\PY{p}{,} \PY{n}{clip\PYZus{}D}\PY{p}{,}  \PY{n}{G\PYZus{}cost\PYZus{}inference}\PY{p}{,} \PY{n}{train\PYZus{}graph\PYZus{}saver}\PY{p}{]}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{n}{d\PYZus{}test\PYZus{}cost}\PY{p}{,} \PY{n}{g\PYZus{}test\PYZus{}cost} \PY{o}{=} \PY{n}{test\PYZus{}gan}\PY{p}{(} \PY{n}{microbiota\PYZus{}test\PYZus{}set}\PY{p}{,} \PY{n}{test\PYZus{}train\PYZus{}operations}\PY{p}{,} \PY{n}{mini\PYZus{}batch\PYZus{}size}\PY{p}{,} \PY{n}{total\PYZus{}epochs}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{n}{plot\PYZus{}cost}\PY{p}{(}\PY{n}{d\PYZus{}train\PYZus{}cost}\PY{p}{,}\PY{n}{d\PYZus{}test\PYZus{}cost}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Discriminator}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{n}{plot\PYZus{}cost}\PY{p}{(}\PY{n}{g\PYZus{}train\PYZus{}cost}\PY{p}{,}\PY{n}{g\PYZus{}test\PYZus{}cost}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Generator}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{c+c1}{\PYZsh{} Quick Test}
+        \PY{n}{n\PYZus{}samples} \PY{o}{=} \PY{l+m+mi}{10000}
+        \PY{n}{gan\PYZus{}samples} \PY{o}{=} \PY{n}{draw\PYZus{}gan\PYZus{}samples}\PY{p}{(}\PY{n}{my\PYZus{}generator}\PY{p}{,} \PY{n}{number\PYZus{}of\PYZus{}samples\PYZus{}to\PYZus{}draw}\PY{o}{=}\PY{n}{n\PYZus{}samples}\PY{p}{)}
+        \PY{n}{gan\PYZus{}samples} \PY{o}{=}  \PY{n}{inverse\PYZus{}pseudo\PYZus{}log\PYZus{}transformation}\PY{p}{(}\PY{n}{gan\PYZus{}samples}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{k}{def} \PY{n+nf}{vector\PYZus{}glv\PYZus{}error}\PY{p}{(}\PY{n}{samples}\PY{p}{,}\PY{n}{m\PYZus{}A}\PY{p}{,} \PY{n}{m\PYZus{}r}\PY{p}{)}\PY{p}{:}
+            \PY{n}{error\PYZus{}record} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+            \PY{k}{for} \PY{n}{k} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{samples}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+                \PY{n}{e} \PY{o}{=} \PY{n}{GLV\PYZus{}Model}\PY{p}{(}\PY{n}{samples}\PY{p}{[}\PY{n}{k}\PY{p}{,}\PY{p}{:}\PY{p}{]}\PY{p}{,}\PY{n}{m\PYZus{}A}\PY{p}{,} \PY{n}{m\PYZus{}r}\PY{p}{)}
+                \PY{n}{error\PYZus{}record}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{e}\PY{p}{)}
+            \PY{k}{return} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{error\PYZus{}record}\PY{p}{)}
+            
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{n}{transformed\PYZus{}abundance} \PY{o}{=} \PY{n}{copy}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{n}{microbiota\PYZus{}table}\PY{p}{)}
+        
+        \PY{n}{rnd\PYZus{}index} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{randint}\PY{p}{(}\PY{n}{low}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{high}\PY{o}{=}\PY{n}{microbiota\PYZus{}table}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}\PY{n}{size}\PY{o}{=}\PY{n}{n\PYZus{}samples}\PY{p}{)}
+        
+        \PY{n}{sub\PYZus{}ds} \PY{o}{=} \PY{n}{inverse\PYZus{}pseudo\PYZus{}log\PYZus{}transformation}\PY{p}{(}\PY{n}{transformed\PYZus{}abundance}\PY{p}{[}\PY{n}{rnd\PYZus{}index}\PY{p}{]}\PY{p}{)}
+        
+        \PY{n}{gan\PYZus{}samples\PYZus{}error}      \PY{o}{=} \PY{n}{vector\PYZus{}glv\PYZus{}error}\PY{p}{(}\PY{n}{gan\PYZus{}samples}\PY{p}{,}\PY{n}{m\PYZus{}A}\PY{p}{,} \PY{n}{m\PYZus{}r}\PY{p}{)}
+        \PY{n}{original\PYZus{}samples\PYZus{}error} \PY{o}{=} \PY{n}{vector\PYZus{}glv\PYZus{}error}\PY{p}{(}\PY{n}{sub\PYZus{}ds}\PY{p}{,}\PY{n}{m\PYZus{}A}\PY{p}{,} \PY{n}{m\PYZus{}r}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{n}{current\PYZus{}epochs} \PY{o}{=} \PY{n}{microbiota\PYZus{}train\PYZus{}set}\PY{o}{.}\PY{n}{epochs\PYZus{}completed} 
+        \PY{n}{plot\PYZus{}glv\PYZus{}error\PYZus{}boxplot}\PY{p}{(}\PY{n}{gan\PYZus{}samples\PYZus{}error}\PY{p}{,} \PY{n}{original\PYZus{}samples\PYZus{}error}\PY{p}{,} \PY{n}{current\PYZus{}epochs} \PY{p}{,} \PY{n}{n\PYZus{}samples}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{n}{plot\PYZus{}glv\PYZus{}epoch\PYZus{}standard\PYZus{}error}\PY{p}{(}\PY{n}{epoch\PYZus{}record}\PY{p}{,} \PY{n}{glv\PYZus{}std\PYZus{}error\PYZus{}record}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{n}{plot\PYZus{}glv\PYZus{}cost}\PY{p}{(}\PY{n}{epoch\PYZus{}record}\PY{p}{,}\PY{n}{glv\PYZus{}cost\PYZus{}record}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{n}{np}\PY{o}{.}\PY{n}{min}\PY{p}{(}\PY{n}{current\PYZus{}draw}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} 
+\end{Verbatim}
+
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+    \end{document}
