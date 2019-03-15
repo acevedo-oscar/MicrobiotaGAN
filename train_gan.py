@@ -54,7 +54,7 @@ def Generator(n_samples, real_data_, name='gen'):
         return real_data_ + (1. * tf.random_normal(tf.shape(real_data_)))
     else:
         with tf.variable_scope(name):
-            noise = tf.random_normal([n_samples, 100])
+            noise = tf.random_normal([n_samples, GEN_DIM])
             output01 = tf_utils.linear(noise, DIM, name='fc-1')
             output01 = tf_utils.relu(output01, name='relu-1')
             
@@ -85,7 +85,7 @@ def Discriminator(inputs, is_reuse=True, name='disc'):
         
         return output04
     
-real_data = tf.placeholder(tf.float32, shape=[None, 100])
+real_data = tf.placeholder(tf.float32, shape=[None, GEN_DIM])
 fake_data = Generator(BATCH_SIZE, real_data)
 
 disc_real = Discriminator(real_data, is_reuse=False)
@@ -289,8 +289,8 @@ with tf.Session() as sess:
             print("\n==> FAKE SAMPLES: " +str(fake_samples))
             print("\n==> Mean SAMPLES: " +str(np.mean(fake_samples)))    
             print("\n==> STD SAMPLES: " +str(np.std(fake_samples)))
-            test_res = stats.ttest_ind(fake_samples,train_data[0,:])        
-            print("\n==> t-Test: " +str(test_res))
+            # test_res = stats.ttest_ind(fake_samples,train_data[0,:])        
+            # print("\n==> t-Test: " +str(test_res))
             print("\n")
 
             """

@@ -8,7 +8,7 @@ cov_matrix = np.multiply(std**2, np.identity(dim))
 
 # print(mean_vec)
 # print(cov_matrix)   
-n_samples = 4000
+n_samples = 10000
 
 print("====> Creating samples <====")
 x_train =[ np.random.multivariate_normal(mean_vec, cov_matrix, ()) for k in range(n_samples) ]

@@ -14,37 +14,22 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import pandas as pd
-import math
+from scipy import stats
 
 from dataset_manager import DataSetManager
 
 
-
 # In[2]:
-
-print(">> How many columns does the output data has?")
-v1 = int(input())
-
-
-print(">> How many GAN samples do you want?")
-v2 = int(input())
-
-
-#####################
 
 
 DIM = 512  # model dimensionality
-GEN_DIM = v1  # output dimension of the generator
+GEN_DIM = 128  # output dimension of the generator
 DIS_DIM = 1  # outptu dimension fo the discriminator
 FIXED_GENERATOR = False  # wheter to hold the generator fixed at ral data plus Gaussian noise, as in the plots in the paper
 LAMBDA = .1  # smaller lambda makes things faster for toy tasks, but isn't necessary if you increase CRITIC_ITERS enough
 BATCH_SIZE = 256  # batch size
 ITERS = 100000  # how many generator iterations to train for
 FREQ = 250  # sample frequency
-
-# > ===== <
-sample_iter = math.ceil(v2/BATCH_SIZE) + 1
-# > ===== <
 
 mode = 'wgan-gp'  # [gan, wgan, wgan-gp]
 dataset = '8gaussians'  # [8gaussians, 25gaussians, swissroll]
@@ -81,7 +66,11 @@ def Generator(n_samples, real_data_, name='gen'):
             
             output04 = tf_utils.linear(output03, GEN_DIM, name='fc-4')
             
-            return output04
+            # Reminder: a logit can be modeled as a linear function of the predictors
+            output05 = tf.nn.softmax(output04, name = 'softmax-1')
+
+            
+            return output05
         
 
 def Discriminator(inputs, is_reuse=True, name='disc'):
@@ -102,9 +91,6 @@ def Discriminator(inputs, is_reuse=True, name='disc'):
     
 real_data = tf.placeholder(tf.float32, shape=[None, GEN_DIM])
 fake_data = Generator(BATCH_SIZE, real_data)
-
-# big_fake_data = Generator(10000, real_data)
-
 
 disc_real = Discriminator(real_data, is_reuse=False)
 disc_fake = Discriminator(fake_data)
@@ -253,10 +239,13 @@ def inf_train_gen():
 
 
 mu, sigma = 0, 0.1 # mean and standard deviation
-n_train_samples = 100
-numero_especies = 128
+n_train_samples = 60000
+numero_especies = 100
 
-train_data = np.random.normal(mu, sigma, (n_train_samples,numero_especies))
+print("==> Loading CSV")
+train_data =  pd.read_csv('data/phylogeny_data/simulated_otu_table_clean.csv',header=None  ).values # np.random.normal(mu, sigma, (n_train_samples,numero_especies))
+mean_vec = np.zeros(100) # vector de 100 ceros
+
 print("Shape")
 print(train_data.shape)
 print("One samples mean")
@@ -271,58 +260,87 @@ session_saver = tf.train.Saver()
 
 pre_trained  = 0
 
-restore_folder = 'model/'
 
-"""
-print("\n==>Restore mu=0, std=0.1 [1], or mu=1, std=0.3 [2]<==" )
-
-if(int(input()) == 2):
-    restore_folder = '1mean/'
-    mu =1
-    sigma = 0.3
-"""
-    
-
-
-
-
-iter_ = 1
 # Train loop
 with tf.Session() as sess:
     sess.run(tf.global_variables_initializer())
-
-    batch_data =  my_ds.next_batch(BATCH_SIZE)
-    # Restore Model
-    saver = tf.train.import_meta_graph(restore_folder+'my_gan.ckpt.meta')
-    saver.restore(sess, tf.train.latest_checkpoint(restore_folder))
-
-    # End Restoring Model
-    
-    for k in range(sample_iter):
-        print("Estamos en la iteracion "+str(k))
-        fake_samples = sess.run(fake_data, feed_dict={real_data: batch_data})
-
-        print("Samples have been generated")
-        print(fake_samples.shape)
-        df = pd.DataFrame(fake_samples)
-        with open('data/gan_samples.csv', 'a') as f:
-            df.to_csv(f, header=False, index=False)
-
-    """
-    fake_samples = fake_samples[0,:]
-    print("\n ==> (iters: "+str(iter_)+") Fake Samples Summary; mu "+str(mu)+"; sigma "+str(sigma)+" <===")
-    a1 = str(fake_samples.shape)
-    print("==> Shape: "+a1)
-    
-    print("==> Vec: "+str(fake_samples))
-    print("==> Values Greater than mu="+str(mu)+"; n="+str(np.sum(fake_samples > mu)))
+    data_gen = inf_train_gen()
 
     
-    a2 = str(np.mean(fake_samples))
-    print("==> Mean: "+a2)
     
-    a3 = str(np.std(fake_samples))
-    print("==> STD: "+a3)
-    """
-    utils.flush(img_folder)
-    # generate_image(sess, batch_data, iter_)
+    for iter_ in range(ITERS):
+        batch_data, disc_cost_ = None, None
+        
+        # train critic
+        for i_ in range(CRITIC_ITERS):
+            batch_data =  my_ds.next_batch(BATCH_SIZE) # data_gen.__next__()
+            disc_cost_, _ = sess.run([disc_cost, disc_train_op], feed_dict={real_data: batch_data})
+            
+            if mode == 'wgan':
+                sess.run(clip_disc_weights)
+        
+        # train generator
+        sess.run(gen_train_op)
+        
+        # write logs and svae samples
+        utils.plot('disc cost', disc_cost_)
+        
+        if (np.mod(iter_, FREQ) == 0) or (iter_+1 == ITERS):
+            
+            fake_samples = sess.run(fake_data, feed_dict={real_data: batch_data})
+            
+            fake_samples = fake_samples[0,:]
+            print("\n==> FAKE SAMPLES: " +str(fake_samples))
+            print("\n==> Mean SAMPLES: " +str(np.mean(fake_samples)))    
+            print("\n==> STD SAMPLES: " +str(np.std(fake_samples)))
+            # test_res = stats.ttest_ind(fake_samples,train_data[0,:])        
+            # print("\n==> t-Test: " +str(test_res))
+            print("\n")
+
+            """
+            print("==> (iters: "+str(iter_)+") Fake Samples Summary; mu "+str(mu)+"; sigma "+str(sigma)+" <===")
+            a1 = str(fake_samples.shape)
+            print("==> Shape: "+a1)
+            
+            print("==> Vec: "+str(fake_samples))
+            
+            print("==> Values Greater than mu="+str(mu)+"; n="+str(np.sum(fake_samples > mu)))
+
+            
+            a2 = str(np.mean(fake_samples))
+            print("==> Mean: "+a2)
+            
+            a3 = str(np.std(fake_samples))
+            print("==> STD: "+a3)
+
+            """
+            utils.flush(img_folder)
+            # generate_image(sess, batch_data, iter_)
+            
+        if (np.mod(iter_, FREQ) == 0) or (iter_+1 == ITERS):
+
+            session_saver.save(sess, 'model/my_gan.ckpt')
+
+        utils.tick()  
+
+
+            
+
+
+# In[12]:
+
+
+np.sum(fake_samples -1 < 0)
+
+
+# In[13]:
+
+
+np.std(fake_samples)
+
+
+# In[ ]:
+
+
+
+
