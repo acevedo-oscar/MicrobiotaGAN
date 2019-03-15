@@ -14,6 +14,7 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import pandas as pd
+import math
 
 from dataset_manager import DataSetManager
 
@@ -21,15 +22,36 @@ from dataset_manager import DataSetManager
 
 # In[2]:
 
+print(">> How many columns does the output data has?")
+v1 = int(input())
+
+
+print(">> How many GAN samples do you want?")
+v2 = int(input())
+
+
+print(">> Where is the saved model?")
+filepath = input()
+
+print(">> Type a name for the precdicted csv?")
+v3 = input()
+output_name ="/"+ v3+".csv"
+
+#####################
+
 
 DIM = 512  # model dimensionality
-GEN_DIM = 100  # output dimension of the generator
+GEN_DIM = v1  # output dimension of the generator
 DIS_DIM = 1  # outptu dimension fo the discriminator
 FIXED_GENERATOR = False  # wheter to hold the generator fixed at ral data plus Gaussian noise, as in the plots in the paper
 LAMBDA = .1  # smaller lambda makes things faster for toy tasks, but isn't necessary if you increase CRITIC_ITERS enough
 BATCH_SIZE = 256  # batch size
 ITERS = 100000  # how many generator iterations to train for
 FREQ = 250  # sample frequency
+
+# > ===== <
+sample_iter = math.ceil(v2/BATCH_SIZE) + 1
+# > ===== <
 
 mode = 'wgan-gp'  # [gan, wgan, wgan-gp]
 dataset = '8gaussians'  # [8gaussians, 25gaussians, swissroll]
@@ -54,7 +76,7 @@ def Generator(n_samples, real_data_, name='gen'):
         return real_data_ + (1. * tf.random_normal(tf.shape(real_data_)))
     else:
         with tf.variable_scope(name):
-            noise = tf.random_normal([n_samples, 100])
+            noise = tf.random_normal([n_samples, GEN_DIM])
             output01 = tf_utils.linear(noise, DIM, name='fc-1')
             output01 = tf_utils.relu(output01, name='relu-1')
             
@@ -85,8 +107,11 @@ def Discriminator(inputs, is_reuse=True, name='disc'):
         
         return output04
     
-real_data = tf.placeholder(tf.float32, shape=[None, 100])
+real_data = tf.placeholder(tf.float32, shape=[None, GEN_DIM])
 fake_data = Generator(BATCH_SIZE, real_data)
+
+# big_fake_data = Generator(10000, real_data)
+
 
 disc_real = Discriminator(real_data, is_reuse=False)
 disc_fake = Discriminator(fake_data)
@@ -235,8 +260,8 @@ def inf_train_gen():
 
 
 mu, sigma = 0, 0.1 # mean and standard deviation
-n_train_samples = 60000
-numero_especies = 100
+n_train_samples = v2
+numero_especies = v1
 
 train_data = np.random.normal(mu, sigma, (n_train_samples,numero_especies))
 print("Shape")
@@ -253,7 +278,8 @@ session_saver = tf.train.Saver()
 
 pre_trained  = 0
 
-restore_folder = 'model/'
+#Here
+restore_folder = 'model/'+filepath + '/'
 
 """
 print("\n==>Restore mu=0, std=0.1 [1], or mu=1, std=0.3 [2]<==" )
@@ -265,7 +291,7 @@ if(int(input()) == 2):
 """
     
 
-
+print("\n <=====> \n")
 
 
 iter_ = 1
@@ -280,31 +306,16 @@ with tf.Session() as sess:
 
     # End Restoring Model
     
-    for k in range(40):
+    for k in range(sample_iter):
         print("Estamos en la iteracion "+str(k))
         fake_samples = sess.run(fake_data, feed_dict={real_data: batch_data})
 
         print("Samples have been generated")
         print(fake_samples.shape)
         df = pd.DataFrame(fake_samples)
-        with open('data/gan_samples.csv', 'a') as f:
+        with open('data/'+output_name, 'a') as f:
             df.to_csv(f, header=False, index=False)
 
-    """
-    fake_samples = fake_samples[0,:]
-    print("\n ==> (iters: "+str(iter_)+") Fake Samples Summary; mu "+str(mu)+"; sigma "+str(sigma)+" <===")
-    a1 = str(fake_samples.shape)
-    print("==> Shape: "+a1)
-    
-    print("==> Vec: "+str(fake_samples))
-    print("==> Values Greater than mu="+str(mu)+"; n="+str(np.sum(fake_samples > mu)))
 
-    
-    a2 = str(np.mean(fake_samples))
-    print("==> Mean: "+a2)
-    
-    a3 = str(np.std(fake_samples))
-    print("==> STD: "+a3)
-    """
     utils.flush(img_folder)
     # generate_image(sess, batch_data, iter_)

@@ -30,6 +30,13 @@ print(">> How many GAN samples do you want?")
 v2 = int(input())
 
 
+print(">> Where is the saved model?")
+filepath = input()
+
+print(">> Type a name for the precdicted csv?")
+v3 = input()
+output_name ="/"+ v3+".csv"
+
 #####################
 
 
@@ -253,8 +260,8 @@ def inf_train_gen():
 
 
 mu, sigma = 0, 0.1 # mean and standard deviation
-n_train_samples = 100
-numero_especies = 128
+n_train_samples = v2
+numero_especies = v1
 
 train_data = np.random.normal(mu, sigma, (n_train_samples,numero_especies))
 print("Shape")
@@ -271,7 +278,8 @@ session_saver = tf.train.Saver()
 
 pre_trained  = 0
 
-restore_folder = 'model/'
+#Here
+restore_folder = 'model/'+filepath + '/'
 
 """
 print("\n==>Restore mu=0, std=0.1 [1], or mu=1, std=0.3 [2]<==" )
@@ -283,7 +291,7 @@ if(int(input()) == 2):
 """
     
 
-
+print("\n <=====> \n")
 
 
 iter_ = 1
@@ -305,24 +313,9 @@ with tf.Session() as sess:
         print("Samples have been generated")
         print(fake_samples.shape)
         df = pd.DataFrame(fake_samples)
-        with open('data/gan_samples.csv', 'a') as f:
+        with open('data/'+output_name, 'a') as f:
             df.to_csv(f, header=False, index=False)
 
-    """
-    fake_samples = fake_samples[0,:]
-    print("\n ==> (iters: "+str(iter_)+") Fake Samples Summary; mu "+str(mu)+"; sigma "+str(sigma)+" <===")
-    a1 = str(fake_samples.shape)
-    print("==> Shape: "+a1)
-    
-    print("==> Vec: "+str(fake_samples))
-    print("==> Values Greater than mu="+str(mu)+"; n="+str(np.sum(fake_samples > mu)))
 
-    
-    a2 = str(np.mean(fake_samples))
-    print("==> Mean: "+a2)
-    
-    a3 = str(np.std(fake_samples))
-    print("==> STD: "+a3)
-    """
     utils.flush(img_folder)
     # generate_image(sess, batch_data, iter_)

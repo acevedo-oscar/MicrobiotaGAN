@@ -19,9 +19,6 @@ from scipy import stats
 from dataset_manager import DataSetManager
 
 
-# In[2]:
-
-
 DIM = 512  # model dimensionality
 GEN_DIM = 128  # output dimension of the generator
 DIS_DIM = 1  # outptu dimension fo the discriminator
@@ -30,15 +27,11 @@ LAMBDA = .1  # smaller lambda makes things faster for toy tasks, but isn't neces
 BATCH_SIZE = 256  # batch size
 ITERS = 100000  # how many generator iterations to train for
 FREQ = 250  # sample frequency
+ 
+img_folder = os.path.join('img','_' + str(FIXED_GENERATOR))
 
-mode = 'wgan-gp'  # [gan, wgan, wgan-gp]
-dataset = '8gaussians'  # [8gaussians, 25gaussians, swissroll]
-img_folder = os.path.join('img', mode + '_' + dataset + '_' + str(FIXED_GENERATOR))
 
-if mode == 'gan':
-    CRITIC_ITERS = 1  # homw many critic iteractions per generator iteration
-else:
-    CRITIC_ITERS = 5  # homw many critic iteractions per generator iteration
+CRITIC_ITERS = 5  # homw many critic iteractions per generator iteration
 
 if not os.path.isdir(img_folder):
     os.makedirs(img_folder)
@@ -65,7 +58,7 @@ def Generator(n_samples, real_data_, name='gen'):
             output03 = tf_utils.relu(output03, name='relu-3')
             
             output04 = tf_utils.linear(output03, GEN_DIM, name='fc-4')
-            
+
             # Reminder: a logit can be modeled as a linear function of the predictors
             output05 = tf.nn.softmax(output04, name = 'softmax-1')
 
@@ -95,63 +88,31 @@ fake_data = Generator(BATCH_SIZE, real_data)
 disc_real = Discriminator(real_data, is_reuse=False)
 disc_fake = Discriminator(fake_data)
 
-if mode == 'wgan' or mode == 'wgan-gp':
-    # WGAN loss
-    disc_cost = tf.reduce_mean(disc_fake) - tf.reduce_mean(disc_real)
-    gen_cost = - tf.reduce_mean(disc_fake)
+disc_cost = tf.reduce_mean(disc_fake) - tf.reduce_mean(disc_real)
+gen_cost = - tf.reduce_mean(disc_fake)
 
-    # WGAN gradient penalty
-    if mode == 'wgan-gp':
-        alpha = tf.random_uniform(shape=[BATCH_SIZE, 1], minval=0., maxval=1.)
-        interpolates = alpha*real_data + (1.-alpha) * fake_data
-        disc_interpolates = Discriminator(interpolates)
-        gradients = tf.gradients(disc_interpolates, [interpolates][0])
-        slopes = tf.sqrt(tf.reduce_sum(tf.square(gradients), reduction_indices=[1]))
-        gradient_penalty = tf.reduce_mean((slopes - 1)**2)
-        
-        disc_cost += LAMBDA * gradient_penalty
-elif mode == 'gan':
-    gen_cost = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits=disc_fake, labels=tf.ones_like(disc_fake)))
-    
-    disc_cost = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits=disc_fake, labels=tf.zeros_like(disc_fake)))
-    disc_cost += tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits=disc_real, labels=tf.ones_like(disc_real)))
-    disc_cost /= 2.
+# WGAN gradient penalty parameters
+
+alpha = tf.random_uniform(shape=[BATCH_SIZE, 1], minval=0., maxval=1.)
+interpolates = alpha*real_data + (1.-alpha) * fake_data
+disc_interpolates = Discriminator(interpolates)
+gradients = tf.gradients(disc_interpolates, [interpolates][0])
+slopes = tf.sqrt(tf.reduce_sum(tf.square(gradients), reduction_indices=[1]))
+gradient_penalty = tf.reduce_mean((slopes - 1)**2)
+
+disc_cost += LAMBDA * gradient_penalty
     
 disc_vars = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, scope='disc')
 gen_vars = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, scope='gen')
 
-if mode == 'wgan-gp':
-    disc_train_op = tf.train.AdamOptimizer(learning_rate=1e-4, beta1=0.5, beta2=0.9).minimize(disc_cost, var_list=disc_vars)
-    
-    if len(gen_vars) > 0:
-        gen_train_op = tf.train.AdamOptimizer(learning_rate=1e-4, beta1=0.5, beta2=0.9).minimize(gen_cost, var_list=gen_vars)
-    else:
-        gen_train_op = tf.no_op()
-        
-elif mode == 'wgan':
-    disc_train_op = tf.train.RMSPropOptimizer(learning_rate=5e-5).minimize(disc_cost, var_list=disc_vars)
-    
-    if len(gen_vars) > 0:
-        gen_train_op = tf.train.RMSPropOptimizer(learning_rate=5e-5).minimize(gen_cost, var_list=gen_vars)
-    else:
-        gen_train_op = tf.no_op()
-        
-    # build an op to do the weight clipping
-    clip_bounds = [-0.01, 0.01]
-    clip_ops = [var.assign(tf.clip_by_value(var, clip_bounds[0], clip_bounds[1])) for var in disc_vars]
-    clip_disc_weights = tf.group(*clip_ops)
-    
-elif mode == 'gan':
-    disc_train_op = tf.train.AdamOptimizer(learning_rate=2e-4, beta1=0.5).minimize(disc_cost, var_list=disc_vars)
-    
-    if len(gen_vars) > 0:                                                        
-        gen_train_op = tf.train.AdamOptimizer(learning_rate=2e-4, beta1=0.5).minimize(gen_cost, var_list=gen_vars)
-    else:
-        gen_train_op = tf.no_op()
 
+#WGAN Training operations
+disc_train_op = tf.train.AdamOptimizer(learning_rate=1e-4, beta1=0.5, beta2=0.9).minimize(disc_cost, var_list=disc_vars)
 
-# In[4]:
-
+if len(gen_vars) > 0:
+    gen_train_op = tf.train.AdamOptimizer(learning_rate=1e-4, beta1=0.5, beta2=0.9).minimize(gen_cost, var_list=gen_vars)
+else:
+    gen_train_op = tf.no_op()
 
 def generate_image(sess, true_dist, idx):
     # generates and saves a plot of the true distribution, the generator, and the critic
@@ -178,10 +139,7 @@ def generate_image(sess, true_dist, idx):
         
     plt.savefig(os.path.join(img_folder, str(idx).zfill(3) + '.jpg'))
 
-
-# In[5]:
-
-
+ 
 # Dataset iterator
 def inf_train_gen():
     if dataset == '8gaussians':
@@ -234,9 +192,7 @@ def inf_train_gen():
             batch_data /= 7.5  # stdev plus a little
             yield batch_data
 
-
-# In[6]:
-
+# Dataets
 
 mu, sigma = 0, 0.1 # mean and standard deviation
 n_train_samples = 60000
@@ -254,8 +210,6 @@ print(np.mean(train_data[0,:]))
 my_ds = DataSetManager(train_data, norm=False)
 
 
-# In[7]:
-
 session_saver = tf.train.Saver()
 
 pre_trained  = 0
@@ -265,8 +219,7 @@ pre_trained  = 0
 with tf.Session() as sess:
     sess.run(tf.global_variables_initializer())
     data_gen = inf_train_gen()
-
-    
+   
     
     for iter_ in range(ITERS):
         batch_data, disc_cost_ = None, None
@@ -275,10 +228,7 @@ with tf.Session() as sess:
         for i_ in range(CRITIC_ITERS):
             batch_data =  my_ds.next_batch(BATCH_SIZE) # data_gen.__next__()
             disc_cost_, _ = sess.run([disc_cost, disc_train_op], feed_dict={real_data: batch_data})
-            
-            if mode == 'wgan':
-                sess.run(clip_disc_weights)
-        
+             
         # train generator
         sess.run(gen_train_op)
         
@@ -297,23 +247,6 @@ with tf.Session() as sess:
             # print("\n==> t-Test: " +str(test_res))
             print("\n")
 
-            """
-            print("==> (iters: "+str(iter_)+") Fake Samples Summary; mu "+str(mu)+"; sigma "+str(sigma)+" <===")
-            a1 = str(fake_samples.shape)
-            print("==> Shape: "+a1)
-            
-            print("==> Vec: "+str(fake_samples))
-            
-            print("==> Values Greater than mu="+str(mu)+"; n="+str(np.sum(fake_samples > mu)))
-
-            
-            a2 = str(np.mean(fake_samples))
-            print("==> Mean: "+a2)
-            
-            a3 = str(np.std(fake_samples))
-            print("==> STD: "+a3)
-
-            """
             utils.flush(img_folder)
             # generate_image(sess, batch_data, iter_)
             
@@ -322,25 +255,3 @@ with tf.Session() as sess:
             session_saver.save(sess, 'model/my_gan.ckpt')
 
         utils.tick()  
-
-
-            
-
-
-# In[12]:
-
-
-np.sum(fake_samples -1 < 0)
-
-
-# In[13]:
-
-
-np.std(fake_samples)
-
-
-# In[ ]:
-
-
-
-
