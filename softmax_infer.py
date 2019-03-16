@@ -7,7 +7,9 @@ import random
 import numpy as np
 import sklearn.datasets
 import tensorflow as tf
+#import tensorflow_utils as tf_utils
 import tensorflow_utils as tf_utils
+
 import utils as utils
 import math
 
