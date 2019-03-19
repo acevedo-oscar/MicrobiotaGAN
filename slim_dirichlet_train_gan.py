@@ -39,6 +39,16 @@ v5 =int( input() )
 print("Use pretrained model? (0 means No, some number different to 0 means yes)\n")
 decision_number =int( input() )
 
+storing_path = 'model/'+ model_tag + '_data/'
+
+dirName = storing_path
+ 
+try:
+    # Create target Directory
+    os.mkdir(dirName)
+    print("Directory " , dirName ,  " Created ") 
+except FileExistsError:
+    print("Directory " , dirName ,  " already exists")
 
 # ===> Auxiliar functions <=== 
 """
@@ -46,7 +56,7 @@ decision_number =int( input() )
 
 ------------------------------------------------
 """
-def save_history(files_prefix, gen_loss_record,disc_loss_record, my_ds,iter_, epochs, global_iters ):
+def save_history(files_prefix, gen_loss_record,disc_loss_record, epoch_record,my_ds,iter_, epochs, global_iters ):
     # Save losses per epoch
 
     df = pd.DataFrame(np.array(gen_loss_record))
@@ -57,6 +67,9 @@ def save_history(files_prefix, gen_loss_record,disc_loss_record, my_ds,iter_, ep
     with open(files_prefix+'_disc_loss.csv', 'w+') as f:
         df.to_csv(f, header=False, index=False)
 
+    df = pd.DataFrame(np.array(epoch_record))
+    with open(files_prefix+'_epoch_record.csv', 'w+') as f:
+        df.to_csv(f, header=False, index=False)
     # Save current iter and epochs
 
     df = pd.DataFrame(np.array( [epochs + my_ds.epochs_completed, global_iters + iter_] ) ) 
@@ -75,8 +88,7 @@ def send_bot_message(bot,my_ds, iter_, ITERS ):
 
     print("\n")
 
-
-def save_gen_samples(gen_op,sess, k, n = 4 ):
+def save_gen_samples(gen_op, disc_op, sess,path,  k, n = 4):
     """
     k: is the number of epochs used to trained the generator
     n: is the number of batches to draw samples
@@ -88,7 +100,13 @@ def save_gen_samples(gen_op,sess, k, n = 4 ):
 
         samples = sess.run(gen_op)
         df = pd.DataFrame(np.array(samples))
-        with open(files_prefix+suffix, 'a') as f:
+        with open(path+suffix, 'a') as f:
+            df.to_csv(f, header=False, index=False)
+
+        # Score the samples using the critic
+        scores = sess.run(disc_op)
+        df = pd.DataFrame(np.array(scores))
+        with open(path+'scores_'+suffix, 'a') as f:
             df.to_csv(f, header=False, index=False)
 
 # ===> Model Parameters <=== 
@@ -213,20 +231,22 @@ if decision_number == 0:
 
     gen_loss_record = []
     disc_loss_record = []
+    epoch_record = []
 
     epochs = 0
     global_iters = 0
 
 else:
     pre_trained  = True
-    temp = pd.read_csv(files_prefix+'_training.csv',header=None  ).values
+    temp = pd.read_csv(storing_path+'_training.csv',header=None  ).values
     
     epochs, global_iters = temp.flatten()
 
     my_ds.epochs_completed  = epochs
 
-    gen_loss_record = (pd.read_csv(files_prefix+'_gen_loss.csv',header=None  ).values).tolist()
-    disc_loss_record = (pd.read_csv(files_prefix+'_disc_loss.csv',header=None  ).values).tolist()
+    gen_loss_record = (pd.read_csv(storing_path+'_gen_loss.csv',header=None  ).values).tolist()
+    disc_loss_record = (pd.read_csv(storing_path+'_disc_loss.csv',header=None  ).values).tolist()
+    epoch_record = (pd.read_csv(storing_path+'_epoch_record.csv',header=None  ).values).tolist()
 
 # Create a DLBot instance
 bot = DLBot(token=telegram_token, user_id=telegram_user_id)
@@ -265,13 +285,16 @@ with tf.Session() as sess:
         if current_epoch > previous_epoch and condition2:
             disc_loss_record.append(disc_cost_)
             gen_loss_record.append(gen_cost2)
+            epoch_record.append(my_ds.epochs_completed ) 
             # print("Diff "+str(current_epoch - previous_epoch))
 
         if (np.mod(iter_, FREQ) == 0) or (iter_+1 == ITERS):
-
+            
+            """
             print("===> Debugging")
             print(disc_loss_record)
             print(gen_loss_record)
+            """
 
             bot.loss_hist.append(disc_cost_)
 
@@ -280,10 +303,20 @@ with tf.Session() as sess:
             send_bot_message(bot,my_ds, iter_, ITERS )
  
             session_saver.save(sess, model_path)
-            save_history(files_prefix, gen_loss_record,disc_loss_record, my_ds,iter_, epochs, global_iters )
+            save_history(storing_path, gen_loss_record,disc_loss_record,epoch_record, my_ds,iter_, epochs, global_iters )
 
             k = my_ds.epochs_completed
-            save_gen_samples(fake_data,sess, k) # fake_data = Generator_Softmax(BATCH_SIZE)
+            save_gen_samples(fake_data, disc_fake ,sess, storing_path, k) # fake_data = Generator_Softmax(BATCH_SIZE)
             
 
         utils.tick()  #  _iter[0] += 1
+
+    if iter_ == ITERS:
+        session_saver.save(sess, model_path)
+
+save_history(storing_path, gen_loss_record,disc_loss_record,epoch_record, my_ds,iter_, epochs, global_iters )
+k = my_ds.epochs_completed
+
+bot.stop_bot()
+
+print("Training is done")
