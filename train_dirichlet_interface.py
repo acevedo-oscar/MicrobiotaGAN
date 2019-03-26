@@ -343,7 +343,7 @@ def train_gan(train_set, indices: List, samples_per_N:int, repetition_n:int, bat
 
     # Duct tapping the size of gan sample set to avoid changing the TF Graph
 
-    temp1 = pd.read_csv('data/experiment_march_21/train_set.csv', header=None).values
+    temp1 = pd.read_csv(gan_samples_path, header=None).values
     temp1 = temp1[0:n_samples]
     df = pd.DataFrame(temp1)
 
