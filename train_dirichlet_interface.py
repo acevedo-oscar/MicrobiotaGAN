@@ -29,17 +29,25 @@ telegram_user_id = 780738092 # replace None with your telegram user id (integer)
 
 ------------------------------------------------
 """
-def train_gan(train_set, indices: List, samples_per_N:int, repetition_n:int, batch_size: int =256):
+def train_gan(train_set, indices: List, samples_per_N:int, repetition_n:int, identifier:str, batch_size: int =256, desired_epochs: int = 1000):
+    """
+    The GAN is trained for 1000 epochs. If a a set of 60k samples is trained with a batchsize of 256,
+    then a epoch equals 226 iterations. A budget of 100,000 iterations would equals to 426
+
+    """
     assert train_set.shape[0] > len(indices)
 
     print(train_set.shape)
     print(len(indices))
 
-    my_ds = DataSetManager(train_set[indices], norm=False)
+    my_ds = DataSetManager(train_set[indices])
 
 
     # print("Set number of iterations to train\n")
-    v5 = 1000
+    v5 = (desired_epochs*(train_set[indices].shape[0]))//batch_size +1
+
+    print("ITERS "+str(v5))
+    print("SIZE "+str(train_set[indices].shape))
 
 
     # print("Use pretrained model? (0 means No, some number different to 0 means yes)\n")
@@ -88,9 +96,14 @@ def train_gan(train_set, indices: List, samples_per_N:int, repetition_n:int, bat
         with open(files_prefix+'_training.csv', 'w+') as f:
             df.to_csv(f, header=False, index=False)
 
-    def send_bot_message(bot,my_ds, iter_, ITERS ):
+    def send_bot_message(bot,my_ds, iter_, ITERS, identifier ):
+        """ 
+        Not quite straighforward since the critic draws many more samples.
 
-        message = "\nEpochs ["+str(my_ds.epochs_completed)+"] Iter: "+str(iter_)+" , % "+str(100* iter_/ITERS) 
+        """
+
+        message = "\nEpochs ["+str(my_ds.epochs_completed)+"] Iter: "+str(iter_)+";"+str(np.round(100* iter_/ITERS,2))+"% "
+        message = message + identifier
         print(message)
         bot.set_status(message)
         # Send update message
@@ -265,8 +278,14 @@ def train_gan(train_set, indices: List, samples_per_N:int, repetition_n:int, bat
         if pre_trained == True:
             # tf.reset_default_graph() 
             session_saver.restore(sess,model_path)
-        
-        for iter_ in range(ITERS):
+        #
+        # DUCK TAPE SOLUTION
+        iter_ = 0
+
+        while my_ds.epochs_completed < desired_epochs:
+            iter_ +=1
+
+        #for iter_ in range(ITERS):
             batch_data, disc_cost_ = None, None
             
             previous_epoch =  my_ds.epochs_completed 
@@ -302,7 +321,7 @@ def train_gan(train_set, indices: List, samples_per_N:int, repetition_n:int, bat
 
                 fake_samples = sess.run(fake_data) # , feed_dict={real_data: batch_data}
                 # print("\n==> Sum-Simplex condition: " +str(np.sum(fake_samples, axis=1))) 
-                send_bot_message(bot,my_ds, iter_, ITERS )
+                send_bot_message(bot,my_ds, iter_, ITERS, identifier)
     
                 session_saver.save(sess, model_path)
                 save_history(storing_path, gen_loss_record,disc_loss_record,epoch_record, my_ds,iter_, epochs, global_iters )

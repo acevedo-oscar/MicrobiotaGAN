@@ -14,6 +14,30 @@ ds_size = train_ds.shape[0]
 repetitions = 5
 batch_size = 256
 
+
+#partiton_n = [300, 400, 500, 700]
+
+partiton_n = pd.read_csv('random_amounts.csv', header=None).values.flatten()
+
+print(partiton_n)
+print(len(partiton_n))
+
+for m in range(len(partiton_n)):
+
+    for k_rep in range(repetitions):
+
+        # partiton_n = np.random.randint(batch_size,ds_size) #At least it has to fit one batch size
+        index_list = np.random.randint(0,ds_size, size=partiton_n[m]).tolist()
+
+        print("Calling training function")
+        ratio = str(k_rep+1)+"/"+str(repetitions)
+        ratio2 = str(m+1)+"/"+str(len(partiton_n))
+        telegram_message = " >> Repetition ("+ratio+") of Partiton ("+ratio2+")"
+        
+        train_gan(train_ds,  index_list, partiton_n[m], k_rep,telegram_message)
+        print("====> Finished repetition "+str(k_rep)+' of partition # '+str(m))
+
+# Snippet to write a partition table
 """
 partiton_n = [np.random.randint(batch_size,ds_size) for k in range(10) ] 
 
@@ -23,21 +47,3 @@ save_name = 'random_amounts.csv'
 with open(save_name, 'a') as f:
     df.to_csv(f, header=False, index=False)
 """
-
-partiton_n = [300, 400, 500, 700]
-
-# partiton_n = pd.read_csv('random_amounts.csv', header=None).values.flatten()
-
-print(partiton_n)
-print(len(partiton_n))
-
-for m in range(len(partiton_n)):
-
-    for k in range(repetitions):
-
-        # partiton_n = np.random.randint(batch_size,ds_size) #At least it has to fit one batch size
-        index_list = np.random.randint(0,ds_size, size=partiton_n[m]).tolist()
-
-        print("Calling training function")
-        train_gan(train_ds,  index_list, partiton_n[m], k)
-        print("====> Finished repetition "+str(k)+' of partition # '+str(m))

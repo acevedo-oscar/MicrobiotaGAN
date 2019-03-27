@@ -7,14 +7,15 @@ import seaborn as sns
 sns.set(color_codes=True)
 import os
 
-from scipy.stats import entropy as DKL
+# from scipy.stats import entropy as JSD
+
+from scipy.spatial.distance import jensenshannon as JSD 
 
 
 def gan_error(gan_ds, training_ds):
     assert gan_ds.shape == training_ds.shape
-    a = gan_ds.mean(axis=0)
-    b = training_ds.mean(axis=0)
-    return DKL(a,b)
+
+    return np.exp(JSD(gan_ds,training_ds).mean())
 
 def build_table(data_path, train_ds):
 
@@ -26,8 +27,10 @@ def build_table(data_path, train_ds):
     directory_list=[x[0].replace(cwd,'').replace('/','') for x in os.walk(cwd,topdown=True)]
     directory_list= directory_list[1:]
     directory_list = sorted(directory_list)
+    
+    #print(directory_list)
         
-    dkl_record = []
+    jsd_record = []
     
     id_sample_N = []
     id_repetition = []
@@ -36,8 +39,11 @@ def build_table(data_path, train_ds):
     # For loop goes here
     for dir_k in range(len(directory_list)):
 
-        numbers_list =(directory_list[dir_k].replace('_data','').replace('_',' ').replace('/',' ')).split(' ')
+        if dir_k%5 ==0:
+            percentage = str(np.round(100*dir_k /len(directory_list),2))+"%"
+            print("Table Building progress "+percentage )
 
+        numbers_list =(directory_list[dir_k].replace('_data','').replace('_',' ').replace('/',' ')).split(' ')
 
         os.chdir(directory_list[dir_k])
         ids = [int(numbers_list[k]) for k in range(len(numbers_list))]
@@ -48,7 +54,7 @@ def build_table(data_path, train_ds):
         indices =  (pd.read_csv('training_indices.csv', header=None) .values).flatten() 
         val = gan_error(fake_samples, train_ds[indices])
         
-        dkl_record.append(val)
+        jsd_record.append(val)
         id_sample_N.append(ids[0])
         id_repetition.append(ids[1])
         
@@ -59,7 +65,7 @@ def build_table(data_path, train_ds):
     os.chdir(old_path)
     
     plot_table = pd.DataFrame(
-    {'DKL': dkl_record,
+    {'JSD': jsd_record,
      'id_sample_N': id_sample_N,
      'id_repetition': id_repetition
     })
@@ -76,8 +82,8 @@ def plot_gan_curve(my_dataframe, debug_flag = False):
     # Compute mean of observationsß
     for k in range(len(samples_n)):
         a = my_dataframe[my_dataframe.id_sample_N == samples_n[k]]
-        #print(a.DKL.values.mean())
-        mean_y.append(a.DKL.values.mean())
+        #print(a.JSD.values.mean())
+        mean_y.append(a.JSD.values.mean())
         
     mean_y = np.array(mean_y)
         
@@ -86,7 +92,7 @@ def plot_gan_curve(my_dataframe, debug_flag = False):
     # Compute the STD
     for k in range(len(samples_n)):
         a = my_dataframe[my_dataframe.id_sample_N == samples_n[k]]
-        a = a.DKL.values
+        a = a.JSD.values
         #print(a)
         #print(a.std())
         std_mean.append(a.std()/np.sqrt(len(a))) #/ 
@@ -111,7 +117,7 @@ def build_table2(data_path, test_ds):
     directory_list= directory_list[1:]
     directory_list = sorted(directory_list)
         
-    dkl_record = []
+    jsd_record = []
     
     id_sample_N = []
     id_repetition = []
@@ -119,6 +125,11 @@ def build_table2(data_path, test_ds):
     # print(len(directory_list))
     # For loop goes here
     for dir_k in range(len(directory_list)):
+        
+        if dir_k%5 ==0:
+            percentage = str(np.round(100*dir_k /len(directory_list),2))+"%"
+            print("Table Building progress "+percentage )
+
 
         numbers_list =(directory_list[dir_k].replace('_data','').replace('_',' ').replace('/',' ')).split(' ')
 
@@ -127,6 +138,7 @@ def build_table2(data_path, test_ds):
         ids = [int(numbers_list[k]) for k in range(len(numbers_list))]
 
         samples_file = 'gan_samples_'+numbers_list[0]+'_'+numbers_list[1] + '.csv'
+        # print(samples_file)
 
         fake_samples = pd.read_csv(samples_file,header=None) .values
         #indices =  (pd.read_csv('training_indices.csv', header=None) .values).flatten() 
@@ -136,7 +148,7 @@ def build_table2(data_path, test_ds):
             val = gan_error(fake_samples, test_ds[0:fake_samples.shape[0],:])
 
         
-        dkl_record.append(val)
+        jsd_record.append(val)
         id_sample_N.append(ids[0])
         id_repetition.append(ids[1])
         
@@ -147,7 +159,7 @@ def build_table2(data_path, test_ds):
     os.chdir(old_path)
     
     plot_table = pd.DataFrame(
-    {'DKL': dkl_record,
+    {'JSD': jsd_record,
      'id_sample_N': id_sample_N,
      'id_repetition': id_repetition
     })

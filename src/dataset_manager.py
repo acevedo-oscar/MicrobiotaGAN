@@ -1,39 +1,12 @@
 import numpy
-def normalize_ds(dataset):
-    """
-    Normalizes using the following formula. We use it because species abundance
-    should be greater or equal to zero.
-
-    Z = X - min(X) / max(X) - min(x)
-
-    It assumes that the dataset is two-dimentional matrix where each row represents
-    a different community.
-
-    Outliers may cause troubles
-    """
-    dataset = copy.copy(dataset)
-
-    dim_dataset = dataset.shape
-
-    for n_row in range(dim_dataset[0]):
-        k = dataset[n_row,:]
-        k_norm =(k - np.min(k))/(np.max(k) - np.min(k))
-        dataset[n_row,:] = k_norm
-
-    return dataset
-
 
 class DataSetManager:
 
-    def __init__(self, images_set, norm=False) -> None:
+    def __init__(self, my_ds) -> None:
 
-        if norm:
-            ds = normalize_ds(images_set)
-        else:
-            ds = images_set
 
-        self._images = ds
-        self.num_examples = images_set.shape[0]
+        self._images = my_ds
+        self.num_examples = my_ds.shape[0]
         # self._epochs_completed : int = 0
         self.epochs_completed: int = 0
         self._index_in_epoch = 0
