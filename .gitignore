@@ -1,2 +1,11 @@
 *.csv
 *.pickle
+*.csv
+*.pickle
+*.ckpt*
+*.jpg
+*.png
+*.svg
+*.JPG
+*.tar
+*.tar.gz
