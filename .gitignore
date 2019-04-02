@@ -1,11 +1,18 @@
 *.csv
 *.pickle
+<<<<<<< HEAD
 *.csv
 *.pickle
+=======
+>>>>>>> c7a60e3022e811e2a120876e740239b8ba424b93
 *.ckpt*
 *.jpg
 *.png
 *.svg
 *.JPG
 *.tar
+<<<<<<< HEAD
 *.tar.gz
+=======
+*.tar.gz
+>>>>>>> c7a60e3022e811e2a120876e740239b8ba424b93
