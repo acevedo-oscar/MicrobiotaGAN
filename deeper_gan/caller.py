@@ -10,7 +10,7 @@ os.chdir("../")
 ##
 
 print("Loading Train func")
-from train_dirichlet_interface import train_gan
+from train_denser_dirichlet_interface import train_gan
 print("Finished Loading Train func")
 
 train_ds = pd.read_csv('data/experiment_march_21/train_set.csv', header=None).values

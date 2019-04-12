@@ -166,7 +166,7 @@ def build_table2(data_path, test_ds):
     
     return plot_table
 
-def plot_gan_curve(my_dataframe, debug_flag = False):
+def plot_gan_curve(my_dataframe, gan_label:str, debug_flag = False):
     mean_y = []
     std_mean = []
 
@@ -194,7 +194,7 @@ def plot_gan_curve(my_dataframe, debug_flag = False):
     if debug_flag:
         print('Standard error of the mean '+str(std_mean))
 
-    sns.lineplot(samples_n, mean_y, marker = 'o')
+    sns.lineplot(samples_n, mean_y, marker = 'o', label = gan_label, legend= "full")
     plt.errorbar(samples_n, mean_y, yerr= std_mean, fmt='o')
     #plt.show()
 

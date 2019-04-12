@@ -29,7 +29,7 @@ telegram_user_id = 780738092 # replace None with your telegram user id (integer)
 
 ------------------------------------------------
 """
-def train_gan(train_set, indices: List, samples_per_N:int, repetition_n:int, identifier:str,experiment_name:str,  batch_size: int =256, desired_epochs: int = 1000):
+def train_gan(train_set, indices: List, samples_per_N:int, repetition_n:int, identifier:str,experiment_name:str,  device_config, batch_size: int =256, desired_epochs: int = 1000):
     """
     The GAN is trained for 1000 epochs. If a a set of 60k samples is trained with a batchsize of 256,
     then a epoch equals 226 iterations. A budget of 100,000 iterations would equals to 426
