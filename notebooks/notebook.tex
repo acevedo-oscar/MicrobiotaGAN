@@ -141,11 +141,7 @@
     \def\gt{>}
     \def\lt{<}
     % Document parameters
-<<<<<<< HEAD
-    \title{analyze\_dirich}
-=======
-    \title{ exploratory data analysis}
->>>>>>> 44419ca6f155fcc7ac2630dc606bc45259c0f7c6
+    \title{compara\_gan}
     
     
     
@@ -284,423 +280,188 @@
     
 
     
-<<<<<<< HEAD
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}1}]:} \PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
-        \PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
-        \PY{o}{\PYZpc{}}\PY{k}{matplotlib} inline
+{\color{incolor}In [{\color{incolor}1}]:} \PY{o}{\PYZpc{}}\PY{k}{load\PYZus{}ext} autoreload
+        \PY{o}{\PYZpc{}}\PY{k}{autoreload} 2
+        
         \PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
-        \PY{k+kn}{import} \PY{n+nn}{copy} 
+        \PY{k+kn}{from} \PY{n+nn}{plot\PYZus{}utils} \PY{k}{import}  \PY{o}{*}
+        \PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+        
+        \PY{o}{\PYZpc{}}\PY{k}{matplotlib} widget
+        \PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
         
         \PY{k+kn}{import} \PY{n+nn}{seaborn} \PY{k}{as} \PY{n+nn}{sns}
-        \PY{n}{sns}\PY{o}{.}\PY{n}{set}\PY{p}{(}\PY{n}{color\PYZus{}codes}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
-=======
-    \hypertarget{exploratory-data-analysis}{%
-\section{Exploratory Data Analysis}\label{exploratory-data-analysis}}
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor} }]:} \PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
-        \PY{k+kn}{import} \PY{n+nn}{matplotlib} \PY{k}{as} \PY{n+nn}{plt}
-        \PY{o}{\PYZpc{}}\PY{k}{matplotlib} inline
-        \PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
-        \PY{k+kn}{import} \PY{n+nn}{copy} 
->>>>>>> 44419ca6f155fcc7ac2630dc606bc45259c0f7c6
+        \PY{n}{sns}\PY{o}{.}\PY{n}{set}\PY{p}{(}\PY{p}{)}
+        \PY{k+kn}{from} \PY{n+nn}{scipy}\PY{n+nn}{.}\PY{n+nn}{spatial}\PY{n+nn}{.}\PY{n+nn}{distance} \PY{k}{import} \PY{n}{jensenshannon} \PY{k}{as} \PY{n}{JSD} 
 \end{Verbatim}
 
 
     \begin{Verbatim}[commandchars=\\\{\}]
-<<<<<<< HEAD
-{\color{incolor}In [{\color{incolor}2}]:} \PY{k}{def} \PY{n+nf}{species\PYZus{}mean}\PY{p}{(}\PY{n}{vec}\PY{p}{,} \PY{n}{n}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{:}
-            \PY{k}{return} \PY{n}{np}\PY{o}{.}\PY{n}{round}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{vec}\PY{p}{,}\PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}\PY{p}{,}\PY{n}{n}\PY{p}{)}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}3}]:} \PY{k}{def} \PY{n+nf}{euclidean\PYZus{}distance}\PY{p}{(}\PY{n}{a}\PY{p}{,}\PY{n}{b}\PY{p}{,} \PY{n}{n}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{:}
-            \PY{k}{return} \PY{n}{np}\PY{o}{.}\PY{n}{round}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{n}{a}\PY{o}{\PYZhy{}}\PY{n}{b}\PY{p}{)}\PY{p}{,}\PY{n}{n}\PY{p}{)}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}4}]:} \PY{k}{def} \PY{n+nf}{species\PYZus{}histogram}\PY{p}{(}\PY{n}{gan\PYZus{}point}\PY{p}{,} \PY{n}{training\PYZus{}point}\PY{p}{,} \PY{n}{n\PYZus{}bins} \PY{o}{=} \PY{l+m+mi}{20}\PY{p}{)}\PY{p}{:}
-        
-            \PY{n}{sns}\PY{o}{.}\PY{n}{distplot}\PY{p}{(}\PY{n}{training\PYZus{}point}\PY{p}{,}\PY{n}{bins}\PY{o}{=}\PY{n}{n\PYZus{}bins}\PY{p}{,} \PY{n}{kde}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Training}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-            \PY{n}{sns}\PY{o}{.}\PY{n}{distplot}\PY{p}{(}\PY{n}{gan\PYZus{}point}\PY{p}{,}\PY{n}{bins}\PY{o}{=}\PY{n}{n\PYZus{}bins}\PY{p}{,} \PY{n}{kde}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{GAN}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-        
-            \PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}
-            \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Hisotograma para el de un punto}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-        
-            \PY{n}{fig} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{gcf}\PY{p}{(}\PY{p}{)}
-            \PY{n}{fig}\PY{o}{.}\PY{n}{set\PYZus{}size\PYZus{}inches}\PY{p}{(}\PY{l+m+mf}{18.5}\PY{p}{,} \PY{l+m+mf}{10.5}\PY{p}{)}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}5}]:} \PY{n}{set\PYZus{}n} \PY{o}{=} \PY{l+m+mi}{7}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}6}]:} \PY{n}{ic} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ic\PYZus{}dirichlet.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{header}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)} \PY{o}{.}\PY{n}{values}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}7}]:} \PY{n}{n} \PY{o}{=} \PY{n}{ic}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
-        \PY{n+nb}{print}\PY{p}{(}\PY{n}{ic}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
-        \PY{c+c1}{\PYZsh{}tags = [str(round(np.linalg.norm(ic[k,:], ord=1))) for k in range(n)]}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-(10, 100)
+/home/acevedo/anaconda3/lib/python3.6/importlib/\_bootstrap.py:219: RuntimeWarning: numpy.ufunc size changed, may indicate binary incompatibility. Expected 216, got 192
+  return f(*args, **kwds)
 
     \end{Verbatim}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}8}]:} \PY{n}{filepath\PYZus{}gan}\PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{../data/gan\PYZus{}dirichlet\PYZus{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{+}\PY{n+nb}{str}\PY{p}{(}\PY{n}{set\PYZus{}n}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{.csv}\PY{l+s+s1}{\PYZsq{}}
-        \PY{c+c1}{\PYZsh{} filepath\PYZus{}train= \PYZsq{}../data/DS\PYZus{}\PYZsq{}+str(set\PYZus{}n)+\PYZsq{}.csv\PYZsq{}}
+{\color{incolor}In [{\color{incolor}2}]:}  
+        \PY{n}{train\PYZus{}set} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{../data/experiment\PYZus{}march\PYZus{}21/train\PYZus{}set.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{header}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)} \PY{o}{.}\PY{n}{values}
+        \PY{n}{test\PYZus{}set} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{../data/experiment\PYZus{}march\PYZus{}21/test\PYZus{}set.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{header}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)} \PY{o}{.}\PY{n}{values}
         
-          
-        \PY{n}{debug\PYZus{}ds} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{../data/test1.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{header}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)} \PY{o}{.}\PY{n}{values}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}9}]:} \PY{n}{gan\PYZus{}data} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{n}{filepath\PYZus{}gan}\PY{p}{,} \PY{n}{header}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)} \PY{o}{.}\PY{n}{values}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}10}]:} \PY{n}{train\PYZus{}ds} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{../data/DS\PYZus{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{+}\PY{n+nb}{str}\PY{p}{(}\PY{n}{set\PYZus{}n}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{header}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)} \PY{o}{.}\PY{n}{values}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}11}]:} \PY{n}{train\PYZus{}ds}\PY{o}{.}\PY{n}{shape}
+        \PY{n}{train\PYZus{}set}\PY{o}{.}\PY{n}{shape}
 \end{Verbatim}
 
 
 \begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}11}]:} (60000, 100)
+{\color{outcolor}Out[{\color{outcolor}2}]:} (70000, 100)
 \end{Verbatim}
             
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}12}]:} \PY{n}{gan\PYZus{}data}\PY{o}{.}\PY{n}{shape}
-\end{Verbatim}
-
-
-\begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}12}]:} (10496, 100)
-\end{Verbatim}
-            
-    \hypertarget{checamos-condicion-del-simplex}{%
-\section{Checamos condicion del
-Simplex}\label{checamos-condicion-del-simplex}}
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}13}]:} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{train\PYZus{}ds}\PY{p}{,} \PY{n}{axis} \PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
-\end{Verbatim}
-
-
-\begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}13}]:} array([1., 1., 1., {\ldots}, 1., 1., 1.])
-\end{Verbatim}
-            
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}14}]:} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{gan\PYZus{}data}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
-\end{Verbatim}
-
-
-\begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}14}]:} array([1.        , 1.00000002, 1.00000002, {\ldots}, 1.        , 1.00000004,
-                0.99999996])
-\end{Verbatim}
-            
-    \hypertarget{checamos-el-vector-k-con-el-que-se-crearon-los-datos-de-entrenamiento}{%
-\section{Checamos el vector K con el que se crearon los datos de
-entrenamiento}\label{checamos-el-vector-k-con-el-que-se-crearon-los-datos-de-entrenamiento}}
-
-Tambien, lo normalizamos con norma L1
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}15}]:} \PY{n}{n} \PY{o}{=} \PY{n}{set\PYZus{}n} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}
-         \PY{n}{k\PYZus{}vector} \PY{o}{=} \PY{n}{ic}\PY{p}{[}\PY{n}{n}\PY{p}{,}\PY{p}{:}\PY{p}{]}
-         \PY{n}{k\PYZus{}norm} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{n}{k\PYZus{}vector}\PY{p}{,} \PY{n+nb}{ord}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
-         \PY{n}{a1} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{round}\PY{p}{(}\PY{n}{k\PYZus{}vector}\PY{o}{/} \PY{n}{k\PYZus{}norm}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}
-         \PY{n+nb}{print}\PY{p}{(}\PY{n}{k\PYZus{}norm}\PY{p}{)}
-         \PY{n+nb}{print}\PY{p}{(}\PY{n}{a1}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}3}]:} \PY{n}{original\PYZus{}gan\PYZus{}path} \PY{o}{=}  \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{../data/plot4}\PY{l+s+s1}{\PYZsq{}}
 \end{Verbatim}
 
 
     \begin{Verbatim}[commandchars=\\\{\}]
-50.01269637051839
-[0.015 0.015 0.007 0.008 0.016 0.01  0.017 0.007 0.006 0.018 0.015 0.007
- 0.019 0.019 0.    0.007 0.012 0.007 0.016 0.007 0.003 0.016 0.01  0.004
- 0.014 0.005 0.018 0.006 0.01  0.019 0.015 0.001 0.003 0.017 0.008 0.015
- 0.006 0.011 0.015 0.007 0.016 0.013 0.002 0.003 0.004 0.006 0.002 0.004
- 0.007 0.016 0.007 0.013 0.006 0.012 0.011 0.01  0.009 0.012 0.002 0.017
- 0.019 0.013 0.008 0.006 0.01  0.017 0.004 0.007 0.008 0.015 0.003 0.009
- 0.007 0.002 0.009 0.013 0.018 0.016 0.012 0.002 0.016 0.003 0.019 0.017
- 0.003 0.017 0.016 0.001 0.004 0.006 0.004 0.006 0.011 0.013 0.018 0.006
- 0.006 0.019 0.01  0.006]
-
-    \end{Verbatim}
-
-    \hypertarget{checamos-el-vector-promedio-sobre-todos-los-puntos}{%
-\section{Checamos el vector promedio sobre todos los
-puntos}\label{checamos-el-vector-promedio-sobre-todos-los-puntos}}
-
-Tanto para datos de entrenamiento como GAN
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}16}]:} \PY{n}{train\PYZus{}alpha} \PY{o}{=} \PY{n}{species\PYZus{}mean}\PY{p}{(}\PY{n}{train\PYZus{}ds}\PY{p}{)}
-         \PY{n+nb}{print}\PY{p}{(}\PY{n}{train\PYZus{}alpha}\PY{p}{)}
-=======
-{\color{incolor}In [{\color{incolor}2}]:} \PY{n}{phylo\PYZus{}ds} \PY{o}{=}  \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{../data/phylogeny\PYZus{}data/simulated\PYZus{}otu\PYZus{}table\PYZus{}clean.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{header}\PY{o}{=}\PY{k+kc}{None}  \PY{p}{)}\PY{o}{.}\PY{n}{values} \PY{c+c1}{\PYZsh{} }
-        
-        \PY{n}{gan\PYZus{}ds} \PY{o}{=}  \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{../data/phylogeny\PYZus{}data/phylo\PYZus{}gan\PYZus{}samples.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{header}\PY{o}{=}\PY{k+kc}{None}  \PY{p}{)}\PY{o}{.}\PY{n}{values} \PY{c+c1}{\PYZsh{} }
+{\color{incolor}In [{\color{incolor} }]:} 
 \end{Verbatim}
 
 
-    \hypertarget{l2-norm-of-mean-and-std-vectors}{%
-\section{L2 Norm of mean and STD
-vectors}\label{l2-norm-of-mean-and-std-vectors}}
+    \hypertarget{tablas-de-jsd-por-subdataset-y-graficas}{%
+\section{Tablas de JSD por subdataset y
+Graficas}\label{tablas-de-jsd-por-subdataset-y-graficas}}
+
+\hypertarget{jsd-score}{%
+\subsection{JSD Score}\label{jsd-score}}
+
+\[S = e^{\frac{1}{N} \sum_{n=0}^{N}  x}\] Donde
+
+\[\vec x = {JSD(GAN_k, Testset_k)}\]
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}3}]:} \PY{n}{train\PYZus{}std\PYZus{}vec} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{std}\PY{p}{(}\PY{n}{phylo\PYZus{}ds}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{0} \PY{p}{)}\PY{c+c1}{\PYZsh{}each element represent one column}
-        
-        \PY{n}{gan\PYZus{}std\PYZus{}vec} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{std}\PY{p}{(}\PY{n}{gan\PYZus{}ds}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
-        
-        
-        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{L2 Train std}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-        \PY{n+nb}{print}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{n}{train\PYZus{}std\PYZus{}vec}\PY{p}{,} \PY{n+nb}{ord}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
-        
-        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{L2 GAN std}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-        \PY{n+nb}{print}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{n}{gan\PYZus{}std\PYZus{}vec}\PY{p}{,} \PY{n+nb}{ord}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}8}]:} \PY{n}{gan\PYZus{}path} \PY{o}{=}  \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{../data/test\PYZus{}speed/original}\PY{l+s+s1}{\PYZsq{}}
+        \PY{n}{gan\PYZus{}path2} \PY{o}{=}  \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{../data/test\PYZus{}speed/faster}\PY{l+s+s1}{\PYZsq{}}
 \end{Verbatim}
 
 
     \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}11}]:} \PY{n}{tabla\PYZus{}test} \PY{o}{=} \PY{n}{build\PYZus{}table2}\PY{p}{(}\PY{n}{gan\PYZus{}path}\PY{p}{,} \PY{n}{test\PYZus{}set}\PY{p}{)}
+         \PY{n}{tabla\PYZus{}test2} \PY{o}{=} \PY{n}{build\PYZus{}table2}\PY{p}{(}\PY{n}{gan\PYZus{}path2}\PY{p}{,} \PY{n}{test\PYZus{}set}\PY{p}{)}
+\end{Verbatim}
 
-L2 Train std
-0.4791372562983442
 
-L2 GAN std
-0.4702367447845163
+    \begin{Verbatim}[commandchars=\\\{\}]
+Table Building progress 0.0\%
+Table Building progress 0.0\%
 
     \end{Verbatim}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}4}]:} \PY{n}{train\PYZus{}mean\PYZus{}vec} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{phylo\PYZus{}ds}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{0} \PY{p}{)}\PY{c+c1}{\PYZsh{}each element represent one column}
-        
+{\color{incolor}In [{\color{incolor} }]:} 
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}12}]:} \PY{n}{plot\PYZus{}gan\PYZus{}curve}\PY{p}{(}\PY{n}{tabla\PYZus{}test}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{original}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{debug\PYZus{}flag}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+         \PY{n}{plot\PYZus{}gan\PYZus{}curve}\PY{p}{(}\PY{n}{tabla\PYZus{}test2}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{faster}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{debug\PYZus{}flag}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
          
-        \PY{n}{gan\PYZus{}mean\PYZus{}vec} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{gan\PYZus{}ds}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
-        
-        
-        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{L2 Train mean}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-        \PY{n+nb}{print}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{n}{train\PYZus{}mean\PYZus{}vec}\PY{p}{,} \PY{n+nb}{ord}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
-        
-        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{L2 GAN mean}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-        \PY{n+nb}{print}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{n}{gan\PYZus{}mean\PYZus{}vec}\PY{p}{,} \PY{n+nb}{ord}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
->>>>>>> 44419ca6f155fcc7ac2630dc606bc45259c0f7c6
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-<<<<<<< HEAD
-[0.015 0.015 0.007 0.008 0.016 0.01  0.018 0.007 0.006 0.018 0.015 0.007
- 0.019 0.019 0.    0.007 0.012 0.008 0.016 0.007 0.003 0.017 0.01  0.004
- 0.014 0.005 0.018 0.006 0.01  0.019 0.015 0.001 0.003 0.017 0.008 0.015
- 0.005 0.011 0.015 0.007 0.016 0.013 0.002 0.003 0.004 0.006 0.002 0.004
- 0.007 0.016 0.007 0.013 0.006 0.012 0.011 0.01  0.009 0.012 0.002 0.017
- 0.019 0.013 0.008 0.006 0.01  0.017 0.004 0.007 0.008 0.015 0.003 0.009
- 0.007 0.002 0.009 0.013 0.017 0.016 0.012 0.002 0.016 0.003 0.019 0.017
- 0.003 0.017 0.016 0.001 0.004 0.006 0.004 0.006 0.011 0.013 0.018 0.006
- 0.006 0.019 0.01  0.006]
-
-    \end{Verbatim}
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}17}]:} \PY{n}{gan\PYZus{}alpha} \PY{o}{=} \PY{n}{species\PYZus{}mean}\PY{p}{(}\PY{n}{gan\PYZus{}data}\PY{p}{)}
-         \PY{n+nb}{print}\PY{p}{(}\PY{n}{gan\PYZus{}alpha}\PY{p}{)}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-[0.014 0.014 0.006 0.01  0.02  0.011 0.014 0.008 0.007 0.018 0.012 0.008
- 0.019 0.019 0.    0.01  0.013 0.009 0.014 0.006 0.003 0.014 0.007 0.004
- 0.015 0.006 0.017 0.005 0.01  0.017 0.019 0.002 0.002 0.012 0.01  0.02
- 0.006 0.009 0.012 0.005 0.023 0.015 0.002 0.002 0.003 0.006 0.002 0.005
- 0.008 0.013 0.008 0.017 0.004 0.014 0.011 0.01  0.006 0.009 0.002 0.015
- 0.027 0.014 0.005 0.005 0.008 0.019 0.004 0.006 0.009 0.017 0.002 0.01
- 0.007 0.003 0.009 0.018 0.018 0.015 0.015 0.002 0.013 0.002 0.018 0.015
- 0.004 0.02  0.011 0.    0.004 0.005 0.004 0.005 0.011 0.011 0.016 0.006
- 0.004 0.017 0.012 0.007]
-
-    \end{Verbatim}
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}18}]:} \PY{n}{euclidean\PYZus{}distance}\PY{p}{(}\PY{n}{train\PYZus{}alpha}\PY{p}{,} \PY{n}{gan\PYZus{}alpha}\PY{p}{)}
-\end{Verbatim}
-
-
-\begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}18}]:} 0.022
-\end{Verbatim}
-            
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}19}]:} \PY{n}{euclidean\PYZus{}distance}\PY{p}{(}\PY{n}{a1}\PY{p}{,}\PY{n}{train\PYZus{}alpha}\PY{p}{)}
-\end{Verbatim}
-
-
-\begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}19}]:} 0.002
-\end{Verbatim}
-            
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}20}]:} \PY{n}{euclidean\PYZus{}distance}\PY{p}{(}\PY{n}{a1}\PY{p}{,} \PY{n}{gan\PYZus{}alpha}\PY{p}{)}
-\end{Verbatim}
-
-
-\begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}20}]:} 0.022
-\end{Verbatim}
-            
-    \hypertarget{comparacion-con-del-vector-media-de-entrenamiento-contra-ruido}{%
-\section{Comparacion con del vector media de entrenamiento contra
-ruido}\label{comparacion-con-del-vector-media-de-entrenamiento-contra-ruido}}
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}21}]:} \PY{n}{dim} \PY{o}{=} \PY{l+m+mi}{100}
-         \PY{n}{mean\PYZus{}vec} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{n}{dim}\PY{p}{)}
-         \PY{n}{std} \PY{o}{=} \PY{l+m+mf}{0.25}
-         \PY{n}{cov\PYZus{}matrix} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{multiply}\PY{p}{(}\PY{n}{std}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{identity}\PY{p}{(}\PY{n}{dim}\PY{p}{)}\PY{p}{)}
-=======
-
-L2 Train mean
-0.12694195081183723
-
-L2 GAN mean
-0.12858382242165867
-
-    \end{Verbatim}
-
-    \hypertarget{counting-elements-greater-than-epsilon}{%
-\section{\texorpdfstring{Counting elements greater than
-\(\epsilon\)}{Counting elements greater than \textbackslash{}epsilon}}\label{counting-elements-greater-than-epsilon}}
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}5}]:} \PY{n}{alt\PYZus{}train} \PY{o}{=} \PY{n}{copy}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{n}{phylo\PYZus{}ds}\PY{p}{)}
-        
-        \PY{n}{alt\PYZus{}train}\PY{p}{[}\PY{n}{alt\PYZus{}train}\PY{o}{==}\PY{l+m+mi}{0}\PY{p}{]} \PY{o}{=} \PY{l+m+mi}{3}
-        
-        \PY{n}{alt\PYZus{}gan} \PY{o}{=} \PY{n}{copy}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{n}{gan\PYZus{}ds}\PY{p}{)}
-        
-        \PY{n}{alt\PYZus{}gan}\PY{p}{[}\PY{n}{alt\PYZus{}gan}\PY{o}{==}\PY{l+m+mi}{0}\PY{p}{]} \PY{o}{=} \PY{l+m+mi}{3}
->>>>>>> 44419ca6f155fcc7ac2630dc606bc45259c0f7c6
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-<<<<<<< HEAD
-{\color{incolor}In [{\color{incolor}22}]:} \PY{n}{noise} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{multivariate\PYZus{}normal}\PY{p}{(}\PY{n}{mean\PYZus{}vec}\PY{p}{,} \PY{n}{cov\PYZus{}matrix}\PY{p}{)} \PY{c+c1}{\PYZsh{}np.random.normal(0,1,100) }
-         \PY{n+nb}{print}\PY{p}{(}\PY{n}{noise}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
-         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{Mean: }\PY{l+s+s2}{\PYZdq{}}\PY{o}{+}\PY{n+nb}{str}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{noise}\PY{p}{)}\PY{p}{)}\PY{p}{)}
-         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{STD: }\PY{l+s+s2}{\PYZdq{}}\PY{o}{+}\PY{n+nb}{str}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{std}\PY{p}{(}\PY{n}{noise}\PY{p}{)}\PY{p}{)}\PY{p}{)}
-=======
-{\color{incolor}In [{\color{incolor}6}]:} \PY{c+c1}{\PYZsh{} print(np.min(alt\PYZus{}train, axis=0)[0:10])}
-        \PY{c+c1}{\PYZsh{} print(np.min(alt\PYZus{}gan, axis=0)[0:10])}
->>>>>>> 44419ca6f155fcc7ac2630dc606bc45259c0f7c6
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-<<<<<<< HEAD
-(100,)
-
-Mean: 0.023160236247240798
-STD: 0.25792331586892153
-
-    \end{Verbatim}
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}23}]:} \PY{n}{euclidean\PYZus{}distance}\PY{p}{(}\PY{n}{train\PYZus{}alpha}\PY{p}{,}\PY{n}{noise}\PY{p}{)}
-\end{Verbatim}
-
-
-\begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}23}]:} 2.565
-\end{Verbatim}
-            
-    \hypertarget{histogramas}{%
-\section{Histogramas}\label{histogramas}}
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}27}]:} \PY{n}{k} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{randint}\PY{p}{(}\PY{n}{gan\PYZus{}data}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
-         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Sample number: }\PY{l+s+s2}{\PYZdq{}}\PY{o}{+}\PY{n+nb}{str}\PY{p}{(}\PY{n}{k}\PY{p}{)}\PY{p}{)}
          
-         \PY{n}{gan\PYZus{}point} \PY{o}{=} \PY{n}{gan\PYZus{}data}\PY{p}{[}\PY{n}{k}\PY{p}{,}\PY{p}{:}\PY{p}{]}
-         \PY{n}{training\PYZus{}point} \PY{o}{=} \PY{n}{train\PYZus{}ds}\PY{p}{[}\PY{n}{k}\PY{p}{,}\PY{p}{:}\PY{p}{]}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{JSD(GAN,Test)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{40}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZsh{}Samples used to train}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{40}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{GAN JSD \PYZhy{} Samples}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{40}\PY{p}{)}
          
-         \PY{n}{species\PYZus{}histogram}\PY{p}{(}\PY{n}{gan\PYZus{}point}\PY{p}{,} \PY{n}{training\PYZus{}point}\PY{p}{)}
-         \PY{n}{plt}\PY{o}{.}\PY{n}{savefig}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{histo\PYZus{}k\PYZus{}}\PY{l+s+s2}{\PYZdq{}}\PY{o}{+}\PY{n+nb}{str}\PY{p}{(}\PY{n}{k}\PY{p}{)}\PY{p}{,} \PY{n}{dpi}\PY{o}{=}\PY{l+m+mi}{300}\PY{p}{)}
-=======
-{\color{incolor}In [{\color{incolor}38}]:} \PY{n+nb}{print}\PY{p}{(}\PY{n}{alt\PYZus{}train}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
-         \PY{n}{epsilon} \PY{o}{=}  \PY{l+m+mf}{10e\PYZhy{}7}
-         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Nota: Los ceros fueron parchados}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Epsilon: }\PY{l+s+s2}{\PYZdq{}}\PY{o}{+}\PY{n+nb}{str}\PY{p}{(}\PY{n}{epsilon}\PY{p}{)}\PY{p}{)}
-         
-         \PY{n}{train\PYZus{}greater} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{alt\PYZus{}train} \PY{o}{\PYZgt{}} \PY{n}{epsilon}\PY{p}{,} \PY{n}{axis} \PY{o}{=} \PY{l+m+mi}{0}\PY{p}{)}
-         
-         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{Train}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-         \PY{c+c1}{\PYZsh{} print(train\PYZus{}greater)}
-         \PY{n}{a1} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{train\PYZus{}greater}\PY{p}{)}
-         \PY{n+nb}{print}\PY{p}{(}\PY{n}{a1}\PY{p}{)}
-         
-         \PY{n}{percent} \PY{o}{=} \PY{l+m+mi}{100}\PY{o}{*}\PY{p}{(}\PY{n}{a1}\PY{o}{/}\PY{p}{(}\PY{l+m+mi}{128}\PY{o}{*}\PY{n}{alt\PYZus{}train}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}\PY{p}{)}
-         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{As }\PY{l+s+si}{\PYZpc{} o}\PY{l+s+s2}{f data: }\PY{l+s+s2}{\PYZdq{}}\PY{o}{+}\PY{n+nb}{str}\PY{p}{(}\PY{n}{percent}\PY{p}{)}\PY{p}{)}
-         
-         \PY{n}{gan\PYZus{}greater} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{alt\PYZus{}gan} \PY{o}{\PYZgt{}} \PY{n}{epsilon}\PY{p}{,} \PY{n}{axis} \PY{o}{=} \PY{l+m+mi}{0}\PY{p}{)}
-         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{GAN}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-         \PY{c+c1}{\PYZsh{} print(gan\PYZus{}greater)}
-         
-         \PY{n}{a2} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{gan\PYZus{}greater}\PY{p}{)}
-         \PY{n+nb}{print}\PY{p}{(}\PY{n}{a2}\PY{p}{)}
-         
-         \PY{n}{percent2} \PY{o}{=} \PY{l+m+mi}{100}\PY{o}{*}\PY{p}{(}\PY{n}{a2}\PY{o}{/}\PY{p}{(}\PY{l+m+mi}{128}\PY{o}{*}\PY{n}{alt\PYZus{}gan}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}\PY{p}{)}
-         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{As }\PY{l+s+si}{\PYZpc{} o}\PY{l+s+s2}{f data: }\PY{l+s+s2}{\PYZdq{}}\PY{o}{+}\PY{n+nb}{str}\PY{p}{(}\PY{n}{percent2}\PY{p}{)}\PY{p}{)}
->>>>>>> 44419ca6f155fcc7ac2630dc606bc45259c0f7c6
+         \PY{n}{fig} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{gcf}\PY{p}{(}\PY{p}{)}
+         \PY{n}{fig}\PY{o}{.}\PY{n}{set\PYZus{}size\PYZus{}inches}\PY{p}{(}\PY{l+m+mf}{18.5}\PY{p}{,} \PY{l+m+mf}{10.5}\PY{p}{)}
 \end{Verbatim}
 
 
     \begin{Verbatim}[commandchars=\\\{\}]
-<<<<<<< HEAD
-Sample number: 68
+Standard error of the mean [0.00131523]
+Standard error of the mean [0.]
 
     \end{Verbatim}
 
     \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_28_1.png}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_8_1.png}
     \end{center}
     { \hspace*{\fill} \\}
     
-=======
-(100000, 128)
-Nota: Los ceros fueron parchados
-Epsilon: 1e-06
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{n}{plot\PYZus{}gan\PYZus{}curve}\PY{p}{(}\PY{n}{original\PYZus{}tabla\PYZus{}test}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Original}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{plot\PYZus{}gan\PYZus{}curve}\PY{p}{(}\PY{n}{depeer\PYZus{}tabla\PYZus{}test}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Double Nodes (2nd, 3rd layer)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{plot\PYZus{}gan\PYZus{}curve}\PY{p}{(}\PY{n}{sparse\PYZus{}tabla\PYZus{}test}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Sparsemax }\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        
+        \PY{n}{plot\PYZus{}gan\PYZus{}curve}\PY{p}{(}\PY{n}{pre\PYZus{}ribbon\PYZus{}tabla\PYZus{}test}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Ribbon GAN (preliminary)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        
+        \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{JSD(GAN,Test)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{40}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZsh{}Samples used to train}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{40}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{GAN JSD \PYZhy{} Samples}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{40}\PY{p}{)}
+        
+        \PY{n}{fig} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{gcf}\PY{p}{(}\PY{p}{)}
+        \PY{n}{fig}\PY{o}{.}\PY{n}{set\PYZus{}size\PYZus{}inches}\PY{p}{(}\PY{l+m+mf}{18.5}\PY{p}{,} \PY{l+m+mf}{10.5}\PY{p}{)}
+        
+        \PY{n}{plt}\PY{o}{.}\PY{n}{savefig}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{dos.png}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{dpi}\PY{o}{=}\PY{l+m+mi}{300}\PY{p}{)}
+\end{Verbatim}
 
-Train
-12798009
-As \% of data: 99.9844453125
 
-GAN
-8968258
-As \% of data: 69.81875361228475
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} 
+\end{Verbatim}
 
-    \end{Verbatim}
 
->>>>>>> 44419ca6f155fcc7ac2630dc606bc45259c0f7c6
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{n}{tabla\PYZus{}train}  \PY{o}{=} \PY{n}{build\PYZus{}table}\PY{p}{(}\PY{n}{data\PYZus{}path}\PY{p}{,} \PY{n}{train\PYZus{}set}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} 
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{n+nb}{print}\PY{p}{(}\PY{n}{train\PYZus{}set}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{n+nb}{print}\PY{p}{(}\PY{n}{test\PYZus{}set}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{n}{plot\PYZus{}gan\PYZus{}curve}\PY{p}{(}\PY{n}{tabla\PYZus{}test}\PY{p}{,} \PY{n}{debug\PYZus{}flag}\PY{o}{=} \PY{k+kc}{True}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{JSD(GAN,Test)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{40}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZsh{}Samples used to train}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{40}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{JSD(GAN,Test) \PYZhy{} Samples}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{40}\PY{p}{)}
+        
+        \PY{n}{fig} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{gcf}\PY{p}{(}\PY{p}{)}
+        \PY{n}{fig}\PY{o}{.}\PY{n}{set\PYZus{}size\PYZus{}inches}\PY{p}{(}\PY{l+m+mf}{18.5}\PY{p}{,} \PY{l+m+mf}{10.5}\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{} plt.savefig(\PYZdq{}curve.png\PYZdq{}, dpi=300)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{n}{plot\PYZus{}gan\PYZus{}curve}\PY{p}{(}\PY{n}{tabla\PYZus{}train}\PY{p}{,} \PY{n}{debug\PYZus{}flag}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{JSD(GAN,Training)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{40}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZsh{}Samples used to train}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{40}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{JSD(GAN,Training) \PYZhy{} Samples}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{40}\PY{p}{)}
+        
+        \PY{n}{fig} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{gcf}\PY{p}{(}\PY{p}{)}
+        \PY{n}{fig}\PY{o}{.}\PY{n}{set\PYZus{}size\PYZus{}inches}\PY{p}{(}\PY{l+m+mf}{18.5}\PY{p}{,} \PY{l+m+mf}{10.5}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} 
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} 
+\end{Verbatim}
+
+
     \begin{Verbatim}[commandchars=\\\{\}]
 {\color{incolor}In [{\color{incolor} }]:} 
 \end{Verbatim}

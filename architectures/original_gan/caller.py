@@ -6,7 +6,7 @@ partiton_n = pd.read_csv('random_amounts.csv', header=None).values.flatten()
 ##
 import os
 
-os.chdir("../")
+os.chdir("../../")
 ##
 
 print("Loading Train func")
