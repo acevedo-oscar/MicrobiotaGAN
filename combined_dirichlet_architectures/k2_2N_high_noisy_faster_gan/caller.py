@@ -3,7 +3,7 @@ import numpy as np
 import csv
 from timeit import default_timer as timer
 
-partiton_n = np.sort(pd.read_csv('random_amounts.csv', header=None).values.flatten())
+partiton_n = pd.read_csv('random_amounts.csv', header=None).values.flatten()
 print(partiton_n)
 
 ##
@@ -17,7 +17,7 @@ print("Loading Train func")
 from train_dirichlet_interface import train_gan
 print("Finished Loading Train func")
 
-train_ds = pd.read_csv('data/experiment_march_21/train_set.csv', header=None).values
+train_ds = pd.read_csv('data/k2_dir/noisy_high_train.csv', header=None).values
 print(train_ds.shape)
 ds_size = train_ds.shape[0]
 
@@ -27,9 +27,12 @@ repetitions = 5
 batch_size = 256
 
 print("===> Training with CLR policy <===")
+print("===> Training with K2 Dirichlet Dataset <===")
+
 #partiton_n = [300, 400, 500, 700]
 print("Give this experiment a name")
-experiment_name = input()
+experiment_name = "k2_2N_high_noisy_faster_gan" #input()
+print(experiment_name)
 
 assert type(experiment_name) == str
 

@@ -4,10 +4,12 @@ import csv
 from timeit import default_timer as timer
 
 partiton_n = pd.read_csv('random_amounts.csv', header=None).values.flatten()
+print(partiton_n)
 
 ##
 import os
-
+cwd = os.getcwd()
+print(cwd)
 os.chdir("../../")
 ##
 
@@ -15,7 +17,7 @@ print("Loading Train func")
 from train_dirichlet_interface import train_gan
 print("Finished Loading Train func")
 
-train_ds = pd.read_csv('data/experiment_march_21/train_set.csv', header=None).values
+train_ds = pd.read_csv('data/k2_dir/noisy_low_train.csv', header=None).values
 print(train_ds.shape)
 ds_size = train_ds.shape[0]
 
@@ -25,9 +27,12 @@ repetitions = 5
 batch_size = 256
 
 print("===> Training with CLR policy <===")
+print("===> Training with K2 Dirichlet Dataset <===")
+
 #partiton_n = [300, 400, 500, 700]
 print("Give this experiment a name")
-experiment_name = input()
+experiment_name = "k2_2N_low_noise_faster_gan" #input()
+print(experiment_name)
 
 assert type(experiment_name) == str
 
@@ -63,7 +68,7 @@ for m in range(len(partiton_n)):
         # repetition, partition, size of partition, time
         info_log = [k_rep+1, m+1, partiton_n[m], timer()-start ]
 
-        with open('Time_log.csv', 'a') as csvFile:
+        with open(cwd+'/Time_log.csv', 'a') as csvFile:
             writer = csv.writer(csvFile)
             writer.writerow(info_log)         
 

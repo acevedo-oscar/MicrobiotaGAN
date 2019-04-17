@@ -158,8 +158,6 @@ def train_gan(train_set, indices: List, samples_per_N:int, repetition_n:int, ide
     FREQ = 250  # sample frequency
     
     
-
-
     CRITIC_ITERS = 5  # homw many critic iteractions per generator iteration
 
 
@@ -167,45 +165,38 @@ def train_gan(train_set, indices: List, samples_per_N:int, repetition_n:int, ide
 
         with tf.variable_scope(name):
             noise = tf.random_normal([n_samples, GEN_DIM])
-            output01 = tf_utils.linear(noise, DIM, name='fc-1')
+            output01 = tf_utils.linear(noise, 2*DIM, name='fc-1')
             output01 = tf_utils.relu(output01, name='relu-1')
             
-            output02 = tf_utils.linear(output01, DIM, name='fc-2')
+            output02 = tf_utils.linear(output01, 2*DIM, name='fc-2')
             output02 = tf_utils.relu(output02, name='relu-2')
             
-            output03 = tf_utils.linear(output02, DIM, name='fc-3')
+            output03 = tf_utils.linear(output02, 2*DIM, name='fc-3')
             output03 = tf_utils.relu(output03, name='relu-3')
 
-            output04 = tf_utils.linear(output03, DIM, name='fc-4')
-            output04 = tf_utils.relu(output04, name='relu-4')
-            
-            output05 = tf_utils.linear(output04, GEN_DIM, name='fc-5')
+            output04 = tf_utils.linear(output03, GEN_DIM, name='fc-4')
 
             # Reminder: a logit can be modeled as a linear function of the predictors
-            output05 = tf.nn.softmax(output05, name = 'softmax-1')
+            output05 = tf.nn.softmax(output04, name = 'softmax-1')
 
-            
             return output05
             
 
     def Discriminator(inputs, is_reuse=True, name='disc'):
         with tf.variable_scope(name, reuse=is_reuse):
             print('is_reuse: {}'.format(is_reuse))
-            output01 = tf_utils.linear(inputs, DIM, name='fc-1')
+            output01 = tf_utils.linear(inputs, 2*DIM, name='fc-1')
             output01 = tf_utils.relu(output01, name='relu-1')
 
-            output02 = tf_utils.linear(output01, DIM, name='fc-2')
+            output02 = tf_utils.linear(output01, 2*DIM, name='fc-2')
             output02 = tf_utils.relu(output02, name='relu-2')
 
-            output03 = tf_utils.linear(output02, DIM, name='fc-3')
+            output03 = tf_utils.linear(output02, 2*DIM, name='fc-3')
             output03 = tf_utils.relu(output03, name='relu-3')
 
-            output04 = tf_utils.linear(output03, DIM, name='fc-4')
-            output04 = tf_utils.relu(output04, name='relu-4')
-
-            output05 = tf_utils.linear(output04, DIS_DIM, name='fc-5')
+            output04 = tf_utils.linear(output03, DIS_DIM, name='fc-4')
             
-            return output05
+            return output04
         
     real_data = tf.placeholder(tf.float32, shape=[None, GEN_DIM])
     fake_data = Generator_Softmax(BATCH_SIZE)
