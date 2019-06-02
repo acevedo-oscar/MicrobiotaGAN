@@ -73,7 +73,7 @@ def build_table(data_path, train_ds, error_function= "DKL"):
 
         if dir_k%5 ==0:
             percentage = str(np.round(100*dir_k /len(directory_list),2))+"%"
-            print("Table Building progress "+percentage )
+            print("Generating Samples "+percentage )
 
         numbers_list =(directory_list[dir_k].replace('_data','').replace('_',' ').replace('/',' ')).split(' ')
 
