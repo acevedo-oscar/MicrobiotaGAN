@@ -67,8 +67,6 @@ def upsampling2d(x, size=(2, 2), name='upsampling2d'):
 
 
 def linear(x, output_size, bias_start=0.0, with_w=False, name='fc', is_print=True):
-    #print(type(x))
-    #print(x)
     shape = x.get_shape().as_list()
 
     with tf.variable_scope(name):
