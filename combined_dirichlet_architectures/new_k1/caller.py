@@ -23,7 +23,7 @@ ds_size = train_ds.shape[0]
 
 # train_ds = train_ds[0:ds_size,:]
 
-repetitions = 5
+repetitions = 2
 # batch_size = 2*256
 
 print("===> Training with CLR policy <===")
@@ -31,7 +31,7 @@ print("===> Training with K3 Dirichlet Dataset <===")
 
 #partiton_n = [300, 400, 500, 700]
 print("Give this experiment a name")
-experiment_name = "redo_k1" #input()
+experiment_name = "complement_redo_k1" #input()
 print(experiment_name)
 
 assert type(experiment_name) == str
@@ -54,7 +54,7 @@ for m in range(len(partiton_n)):
 
         # partiton_n = np.random.randint(batch_size,ds_size) #At least it has to fit one batch size
 
-        # k_rep +=2
+        k_rep +=3
         print(k_rep)
         index_list = np.random.randint(0,ds_size, size=partiton_n[m]).tolist()
 
