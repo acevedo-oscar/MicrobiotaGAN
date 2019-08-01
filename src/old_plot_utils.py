@@ -14,12 +14,8 @@ from scipy.spatial.distance import jensenshannon as JSD
 
 
 def data_probs(ds,bins_partition):
-    hist, bin_edges = np.histogram(ds,bins=bins_partition, density=False)
-    bins = np.diff(bin_edges)
-    
-    # print(np.sum(np.multiply(hist, df)))
-    
-    probs = np.multiply(hist/hist.sum(), bins)
+    hist, bin_edges = np.histogram(ds,bins=bins_partition, density=True)
+    probs = hist * np.diff(bin_edges)
     return probs
 
 def gan_error(gan_ds, true_ds, error_function):
@@ -31,34 +27,11 @@ def gan_error(gan_ds, true_ds, error_function):
     assert gan_ds.ndim == 1
 
     partitions= np.linspace(true_ds.min(), true_ds.max(),num=100)
-    
-    
-    """
-    if partitions.sum() == 0.0:
-        #print(partitions.sum())
-        #print(partitions)
-        #print("Min: "+str(true_ds.min()))
-        #print("Max: "+str(true_ds.max()))
-
-        # presumably JSD is zero since both distributions are zero
-        return 0
-    """
-    
 
     real_distribution = data_probs(true_ds, partitions)
     estimated_distribution  = data_probs(gan_ds, partitions)
 
     if error_function == "JSD":
-        #a =str( estimated_distribution /estimated_distribution.sum())
-        #b = str(real_distribution / real_distribution.sum())
-        """
-        a =str(estimated_distribution.sum())
-        a_prime = str(estimated_distribution )
-        
-        print("\n P_sum: "+a+", \nP: "+a_prime)
-        print('Resultado: '+str( estimated_distribution /estimated_distribution.sum()))
-        # print("\n P: "+a+", Q: "+b)
-        """
         return JSD(estimated_distribution, real_distribution)
 
 
@@ -67,20 +40,14 @@ def gan_error(gan_ds, true_ds, error_function):
     else:
         print("Invalid error functions")
 
-def gan_error_all_species(gan_ds, true_ds, error_function = "JSD", vector_solution =False):
+def gan_error_all_species(gan_ds, true_ds, error_function = "JSD"):
     assert gan_ds.shape[1] == true_ds.shape[1]
 
     N = gan_ds.shape[1]
 
     scores  = [gan_error(gan_ds[:, k], true_ds[:,k], error_function) for k in range(N) ]
 
-    scores = np.array(scores)
-    
-    if vector_solution:
-        return scores
-    else:
-        return np.mean(scores)
-
+    return np.mean(scores)
 
 def build_table(data_path, train_ds, error_function= "DKL"):
 

@@ -79,7 +79,7 @@ def train_gan(train_set, test_set,  repetition_n:int, experiment_name:str,
 
     ------------------------------------------------
     """
-    def save_history(files_prefix, gen_loss_record,disc_loss_record, jsd_error, current_epoch, epoch_record,my_ds,iter_, epochs, global_iters, BATCH_SIZE, low_lr, high_lr, n_samples:int):
+    def save_history(files_prefix, gen_loss_record,disc_loss_record, jsd_error_mean, jsd_per_species, current_epoch, epoch_record,my_ds,iter_, epochs, global_iters, BATCH_SIZE, low_lr, high_lr, n_samples:int):
         # Save losses per epoch
 
         df = pd.DataFrame(np.array(gen_loss_record))
@@ -107,9 +107,17 @@ def train_gan(train_set, test_set,  repetition_n:int, experiment_name:str,
         with open(files_prefix+'_training.csv', 'w+') as f:
             df.to_csv(f,  index=False) #, header=False, index=False
 
+        # JSD Error per spcies 
+ 
+        with open(files_prefix+'_jsd_vector.csv', 'a') as csvFile:
+            writer = csv.writer(csvFile)
+            writer.writerow( jsd_per_species)         
+
+
+        # Mean JSD species erro
         with open(files_prefix+'_jsd_error.csv', 'a') as csvFile:
             writer = csv.writer(csvFile)
-            writer.writerow([current_epoch, jsd_error])         
+            writer.writerow([current_epoch, jsd_error_mean])         
 
     def send_bot_message(bot,my_ds, iter_, ITERS, identifier ):
         """ 
@@ -349,6 +357,8 @@ def train_gan(train_set, test_set,  repetition_n:int, experiment_name:str,
                 print("Fake population size")
                 print(fake_population.shape)
                 jsd_error = gan_error_all_species(fake_population, test_set)
+                species_jsd_error = gan_error_all_species(fake_population, test_set, "JSD", vector_solution=True)
+                # print(species_jsd_error)
 
                 print("JSD Error "+str(jsd_error))
 
@@ -363,7 +373,7 @@ def train_gan(train_set, test_set,  repetition_n:int, experiment_name:str,
                 current_epoch = my_ds.epochs_completed
 
                 session_saver.save(sess, model_path)
-                save_history(storing_path, gen_loss_record,disc_loss_record, jsd_error, current_epoch, epoch_record, my_ds,iter_, epochs, global_iters, BATCH_SIZE, low_lr, high_lr, train_set.shape[0])
+                save_history(storing_path, gen_loss_record,disc_loss_record, jsd_error, species_jsd_error, current_epoch, epoch_record, my_ds,iter_, epochs, global_iters, BATCH_SIZE, low_lr, high_lr, train_set.shape[0])
 
                 
                 # save_gen_samples(fake_data, disc_fake ,sess, storing_path, k) # fake_data = Generator_Softmax(BATCH_SIZE)
@@ -393,7 +403,7 @@ def train_gan(train_set, test_set,  repetition_n:int, experiment_name:str,
     tf.reset_default_graph()
 
     current_epoch = my_ds.epochs_completed
-    save_history(storing_path, gen_loss_record,disc_loss_record, jsd_error, current_epoch, epoch_record, my_ds,iter_, epochs, global_iters, BATCH_SIZE, low_lr, high_lr, train_set.shape[0])   
+    save_history(storing_path, gen_loss_record,disc_loss_record, jsd_error, species_jsd_error, current_epoch, epoch_record, my_ds,iter_, epochs, global_iters, BATCH_SIZE, low_lr, high_lr, train_set.shape[0])   
     if use_bot:
         bot.stop_bot()
 

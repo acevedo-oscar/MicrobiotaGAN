@@ -27,7 +27,7 @@ repetitions = 5
 # batch_size = 2*256
 
 print("Give this experiment a name")
-experiment_name = "experimental_1" #input()
+experiment_name = "experimental_3" #input()
 print(experiment_name)
 
 assert type(experiment_name) == str
@@ -50,7 +50,7 @@ for k_rep in range(repetitions):
 
     start = timer()
 
-    train_gan(train_ds, test_set, k_rep, experiment_name)
+    train_gan(train_ds, test_set, k_rep, experiment_name, ) # desired_epochs=1000
     print("====> Finished repetition "+str(k_rep))
 
     # repetition, partition, size of partition, time

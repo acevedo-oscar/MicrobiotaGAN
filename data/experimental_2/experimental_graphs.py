@@ -5,23 +5,6 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 sns.set()
 
-def find_indexes(whole, items):
-    n = whole.shape[0]
-    m = items.shape[0]
-    
-    assert n > m
-    
-    my_list = [ ]
-    
-    for k in range(m):
-        for j in range(n):
-            
-            if items[k] == whole[j]:
-                my_list.append(j)
-                
-    return my_list
-    
-
 def produce_plots(experiment_name:str):   
 
     epochs = pd.read_csv('_epoch_record.csv', header=None).values
@@ -102,30 +85,14 @@ def produce_plots(experiment_name:str):
 
     # for k in range(n_spec):
 
-    ds  =jsd_record[-1,:]   
+    ds  =jsd_record[-1,:]
+    print(np.median(ds))-
 
     plt.figure(figsize=(18.5, 10.5))
     sns.boxplot(ds)
     mess = "; epoch "+str(epochs[-1])
     plt.title("JSD All Species"+mess)
-
-    
-    # Computing the ouliers
-
-    q1 = np.quantile(ds, 0.25)
-    q3 = np.quantile(ds, 0.75)
-
-    outliers = ds > (q3 + 1.5*(q3-q1))
-
-    filtered = ds[outliers]  
-
-    outliers_species= np.array(find_indexes(ds, filtered)) + 1
-
-    outlier_mess = "; Outlier Species: " + str(outliers_species)
-
-    #
-
-    plt.xlabel("STD "+str(np.round(ds.std(),2))+outlier_mess)
+    plt.xlabel("STD "+str(np.round(ds.std(),2)))
     plt.ylabel("Mean "+str(np.round(ds.mean(),2 )))
 
     plt.savefig('jsd_boxplot'+".png", dpi=300)
