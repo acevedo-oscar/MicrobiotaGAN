@@ -20,7 +20,7 @@ print("Loading Train func")
 from train_dirichlet_interface import train_gan
 print("Finished Loading Train func")
 
-train_ds =  pd.read_csv('data/three_species/three_spec_dir.csv', header=None).values
+train_ds =  pd.read_csv('data/dirich_data_3/k_combined.csv', header=None).values
 print(train_ds.shape)
 ds_size = train_ds.shape[0]
 
@@ -32,7 +32,7 @@ repetitions = 5
 
 #partiton_n = [300, 400, 500, 700]
 print("Give this experiment a name")
-experiment_name = "gan_3_spec" #input()
+experiment_name = "gan_3_spec_k_combined" #input()
 print(experiment_name)
 
 assert type(experiment_name) == str

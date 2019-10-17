@@ -30,14 +30,14 @@ telegram_token = "753043252:AAG2wjtBKV9nlcv9VEjLDyoShzkTEjTKFzA"  # replace TOKE
 telegram_user_id = 780738092 # replace None with your telegram user id (integer):
 
 
-k3_test_set =  pd.read_csv('data/three_species/three_spec_dir.csv', header=None).values
+k3_test_set =  pd.read_csv('data/dirich_data_3/k_combined.csv', header=None).values
  
 """
 ----------------8<-------------[ cut here ]------------------
 
 ------------------------------------------------
 """
-def train_gan(train_set, indices: List, samples_per_N:int, repetition_n:int, identifier:str,experiment_name:str,  batch_size: int = 256, desired_epochs: int = 5000, use_bot = False):
+def train_gan(train_set, indices: List, samples_per_N:int, repetition_n:int, identifier:str,experiment_name:str,  batch_size: int = 256, desired_epochs: int = 1000, use_bot = False):
     """
     The GAN is trained for 1000 epochs. If a a set of 60k samples is trained with a batchsize of 256,
     then a epoch equals 226 iterations. A budget of 100,000 iterations would equals to 426
@@ -348,7 +348,7 @@ def train_gan(train_set, indices: List, samples_per_N:int, repetition_n:int, ide
                 # Save the data
                 output_data = pd.DataFrame(fake_population)
                 print('UNLOADING DATA')
-                with open('gan_samples.csv', '+w') as f:
+                with open(experiment_name+'.csv', 'w+') as f:
                     output_data.to_csv(f, header=False, index=False)
 
                 print(fake_population.shape)
