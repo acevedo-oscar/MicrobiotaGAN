@@ -227,7 +227,7 @@ def plot_gan_curve(my_dataframe, gan_label:str, debug_flag = False):
     if debug_flag:
         print('Standard error of the mean '+str(std_mean))
 
-    sns.lineplot(samples_n, mean_y, marker = 'o', label = gan_label, legend= "full")
+    sns.lineplot(samples_n, mean_y, marker = 'o', label = gan_label, legend= "full", lw=3)
     plt.errorbar(samples_n, mean_y, yerr= std_mean, fmt='o')
     #plt.show()
 
